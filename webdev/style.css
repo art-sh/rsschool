@@ -10,8 +10,8 @@ a {
   text-decoration: none;
 }
 
-b {
-  font-weight: 700 !important;
+strong {
+  font-weight: 500 !important;
 }
 
 .main-container {
