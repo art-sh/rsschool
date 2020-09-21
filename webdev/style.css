@@ -93,22 +93,23 @@ strong {
 
 .main-header .nav-list .nav-link:hover {
   opacity: 1;
-  font-weight: 700;
+  font-weight: 500;
   border-bottom: 1px solid #fff;
   padding-bottom: 2px;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.1px;
   cursor: pointer;
 }
 
 .main-header .nav-list .nav-link.active {
   opacity: 1;
-  font-weight: 700;
+  font-weight: 500;
   border-bottom: 1px solid #fff;
   padding-bottom: 2px;
 }
 
 .main-header .nav-list .nav-link.active:hover {
   margin-left: 0px;
+  letter-spacing: unset;
 }
 
 .button-block {
@@ -256,7 +257,7 @@ strong {
 .section-our-community .description .header {
   font-size: 16px;
   line-height: 20px;
-  font-weight: 700;
+  font-weight: 500;
   margin-top: 17px;
   margin-bottom: 10px;
   letter-spacing: 2.4px;
@@ -548,10 +549,10 @@ strong {
 
 .footer-inner .link-collection .link:hover {
   opacity: 1;
-  font-weight: 700;
+  font-weight: 500;
   border-bottom: 1px solid #fff;
   padding-bottom: 2px;
-  margin-left: -1px;
+  letter-spacing: -0.1px;
 }
 
 .footer-inner .link-collection .separator {
