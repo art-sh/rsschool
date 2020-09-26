@@ -5,3 +5,4 @@ Private repository for @art-sh
 
 ### Projects:
 * [WebDev](https://rolling-scopes-school.github.io/art-sh-JS2020Q3/webdev/)
+* [Calculator](https://rolling-scopes-school.github.io/art-sh-JS2020Q3/calculator/)
