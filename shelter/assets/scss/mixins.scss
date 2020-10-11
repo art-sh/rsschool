@@ -1,0 +1,360 @@
+@import 'variables.scss';
+
+@font-face {
+  font-family: 'Arial Regular';
+  src: local('Arial'),
+  url('../../assets/fonts/arial.woff2') format('woff2'),
+  url('../../assets/fonts/arial.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Georgia Regular';
+  src: local('Georgia'),
+  url('../../assets/fonts/georgia.woff2') format('woff2'),
+  url('../../assets/fonts/georgia.woff') format('woff');
+}
+
+@mixin font($family, $size: false, $line-height: normal, $weight: normal,  $style: normal) {
+  font-family: $family;
+  font-weight: $weight;
+  font-style: $style;
+  line-height: $line-height;
+
+  @if $size {
+    font-size: $size;
+  }
+}
+
+@mixin h2 {
+  @include font($font-georgia, 44px, 130%);
+}
+
+@mixin h3 {
+  @include font($font-georgia, 35px, 130%);
+  letter-spacing: $letter-spacing-default;
+}
+
+@mixin h3-mobile {
+  @include font($font-georgia, 25px, 130%);
+  letter-spacing: $letter-spacing-default;
+}
+
+@mixin h4 {
+  @include font($font-georgia, 20px, 115%);
+  letter-spacing: $letter-spacing-default;
+}
+
+@mixin h5 {
+  @include font($font-georgia, 15px, 110%);
+  letter-spacing: $letter-spacing-default;
+}
+
+@mixin paragraph-l {
+  @include font($font-arial, 15px, 160%);
+}
+
+@mixin paragraph-s {
+  @include font($font-arial, 12px, 150%);
+}
+
+@mixin logo_title {
+  @include font($font-georgia, 32px, 110%);
+  letter-spacing: $letter-spacing-default;
+}
+
+@mixin logo_subtitle {
+  @include font($font-arial, 13px);
+  letter-spacing: $letter-spacing-wide;
+}
+
+@mixin button-text($theme: light, $withBorder: true) {
+  $isDark: if($theme != light, true, false);
+
+  $buttonBackgroundColor: if($isDark, $color-primary, transparent);
+  $buttonPaddings: if($withBorder, 13px 42px, 15px 45px);
+
+  display: inline-block;
+  border-radius: 100px;
+  padding: $buttonPaddings;
+  @include font($font-georgia, 17px, 130%);
+  letter-spacing: $letter-spacing-default;
+  background-color: $buttonBackgroundColor;
+  color: $color-dark-3xl;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+
+  @if $withBorder {
+    border: 2px solid $color-primary;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: $color-primary-light;
+    border-radius: 100px;
+    transform: scale(0);
+    transition: all $transition-short;
+    z-index: -1;
+  }
+
+  &:hover {
+    @if $withBorder {
+      border: 2px solid $color-primary-light;
+    }
+
+    &::before {
+      transform: none;
+    }
+  }
+}
+
+@mixin button-circle {
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  border: 2px solid $color-primary;
+  transition: all $transition-short;
+  cursor: default;
+  user-select: none;
+
+  &:not(&--inactive):hover {
+    border-color: $color-primary-light;
+    background-color: $color-primary-light;
+    cursor: pointer;
+
+    &:active {
+      border-color: $color-primary;
+      background-color: $color-primary;
+    }
+  }
+}
+
+@mixin header($theme: dark) {
+  $isDark: if($theme == dark, true, false);
+
+  $colorTitle: if($isDark, $color-primary, $color-dark-l);
+  $colorSubTitle: if($isDark, $color-light-xl, $color-dark-3xl);
+  $colorLink: if($isDark, $color-dark-s, $color-dark-l);
+  $colorLinkActive: if($isDark, $color-light-l, $color-dark-3xl);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      &-text {
+        @include logo_title;
+        color: $colorTitle;
+        margin: 0;
+      }
+
+      &-description {
+        @include logo_subtitle;
+        color: $colorSubTitle;
+        margin: 0;
+      }
+    }
+
+    &-navigation {
+      padding-top: 16px;
+
+      &-collection {
+        display: flex;
+
+        &-item {
+          list-style: none;
+          margin-left: 36px;
+          position: relative;
+
+          $parentBlock: &;
+
+          &::after {
+            content: '';
+            display: block;
+            height: 0;
+            background-color: $color-primary;
+            transition: all $transition-short;
+            position: absolute;
+            top: 100%;
+            width: 100%;
+          }
+
+          &:active, &--active {
+            &::after {
+              height: 3px;
+            }
+          }
+
+          &-link {
+            @include paragraph-l;
+            color: $colorLink;
+            cursor: pointer;
+            transition: all $transition-short;
+
+            #{$parentBlock}:hover &, #{$parentBlock}--active & {
+              color: $colorLinkActive;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin footer {
+  background: url('../../assets/images/section-footer/background.png'), radial-gradient(110.67% 538.64% at 5.73% 50%, #513D2F 0%, #1A1A1C 100%), #211F20;
+  padding-top: 40px;
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+
+    &-block {
+      text-align: left;
+      padding-top: 16px;
+
+      $parentBlock: &;
+
+      &--second {
+        margin-left: -6px;
+      }
+
+      &-header {
+        @include h3;
+        color: $color-light-xl;
+      }
+
+      &-link {
+        display: flex;
+        align-items: center;
+        width: max-content;
+        margin-top: 40px;
+        cursor: pointer;
+
+        #{$parentBlock}--second & {
+          margin-top: 33px;
+        }
+
+        &-text {
+          margin-left: 20px;
+          @include h4;
+          color: $color-primary;
+        }
+      }
+
+      &-image {
+        display: flex;
+      }
+    }
+  }
+}
+
+@mixin slider-item {
+  background-color: $color-light-s;
+  border-radius: 9px;
+  overflow: hidden;
+  cursor: pointer;
+
+  &-description {
+    padding: 28px;
+
+    &-name {
+      @include h4;
+      color: $color-dark-l;
+    }
+
+    &-button {
+      margin-top: 30px;
+      @include button-text;
+    }
+  }
+}
+
+@mixin slider-full() {
+  &-nav {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+
+    &-item {
+      @include button-circle;
+      @include h4;
+      margin: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &--active {
+        background-color: $color-primary;
+      }
+
+      &--inactive {
+        border-color: $color-dark-s;
+        color: $color-dark-s;
+      }
+    }
+  }
+
+  &-collection {
+    display: grid;
+    grid-template-columns: repeat(4, 270px);
+    justify-content: space-between;
+    row-gap: 30px;
+
+    &-item {
+      @include slider-item;
+    }
+  }
+}
+
+@mixin slider-line {
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  &-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+
+    &-button {
+      @include button-circle;
+      position: absolute;
+      transform: translateY(-50%);
+
+      &--left {
+        background-image: url('../../assets/images/section-our-friends/icons/arrow-left.svg');
+        left: 0;
+      }
+
+      &--right {
+        background-image: url('../../assets/images/section-our-friends/icons/arrow-right.svg');
+        right: 0;
+      }
+    }
+  }
+
+  &-collection {
+    display: grid;
+    grid-template-columns: repeat(3, 270px);
+    column-gap: 90px;
+
+    &-item {
+      @include slider-item;
+    }
+
+  }
+}

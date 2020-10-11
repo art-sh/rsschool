@@ -1,151 +1,10 @@
-$font-arial: 'Arial Regular', sans-serif;
-$font-georgia: 'Georgia Regular', serif;
-
-$color-white-1: #FFFFFF;
-$color-white-2: #FAFAFA;
-$color-white-3: #F6F6F6;
-$color-gray-1: #cdcdcd;
-$color-gray-2: #B2B2B2;
-$color-black-1: #545454;
-$color-black-2: #4C4C4C;
-$color-black-3: #444444;
-$color-black-4: #292929;
-$color-orange-1: #F1CDB3;
-$color-orange-2: #FDDCC4;
-
-$transition-short: .15s;
-$transition-default: .25s;
-
-@mixin font($family, $size: false, $weight: 'normal',  $style: 'normal') {
-  font-family: $family;
-  font-weight: $weight;
-  font-style: $style;
-
-  @if $size {
-    font-size: $size;
-  }
-}
-
-@font-face {
-  font-family: 'Arial Regular';
-  src: local('Arial'),
-  url('../../assets/fonts/arial.woff2') format('woff2'),
-  url('../../assets/fonts/arial.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Georgia Regular';
-  src: local('Georgia'),
-  url('../../assets/fonts/georgia.woff2') format('woff2'),
-  url('../../assets/fonts/georgia.woff') format('woff');
-}
-
-html, body {
-  font-size: 7px;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-a {
-  text-decoration: none;
-}
-
-.main__wrapper {
-  text-align: center;
-}
-
-.section__wrapper {
-  width: 100%;
-  max-width: 1280px;
-  text-align: center;
-  margin: 0 auto;
-}
-
-.section__container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
+@import '../../assets/scss/base.scss';
 
 .section-not-only {
   background: url('../../assets/images/section-not-only/background.png'), radial-gradient(100% 215.42% at 0% 0%, #5B483A 0%, #262425 100%), #211F20;
   padding-top: 60px;
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    height: 60px;
-
-    &-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-
-      &-text {
-        @include font($font-georgia, 32px);
-        color: $color-orange-1;
-        line-height: 110%;
-        letter-spacing: 0.06em;
-        margin: 0;
-      }
-
-      &-description {
-        @include font($font-arial, 13px);
-        color: $color-white-1;
-        line-height: 115%;
-        letter-spacing: 0.1em;
-        margin: 0;
-      }
-    }
-  }
-
-  &__navigation {
-    padding-top: 16px;
-
-    &-collection {
-      display: flex;
-
-      &-item {
-        list-style: none;
-        margin-left: 36px;
-        position: relative;
-
-        $parentBlock: &;
-
-        &::after {
-          content: '';
-          display: block;
-          height: 0;
-          background-color: $color-orange-1;
-          transition: all $transition-short;
-          position: absolute;
-          top: 100%;
-          width: 100%;
-        }
-
-        &:active, &--active {
-          &::after {
-            height: 3px;
-          }
-        }
-
-        &-link {
-          @include font($font-arial, 15px);
-          line-height: 160%;
-          color: $color-gray-1;
-          cursor: pointer;
-          transition: all $transition-short;
-
-          #{$parentBlock}:hover &, #{$parentBlock}--active & {
-            color: $color-white-2;
-          }
-        }
-      }
-    }
-  }
+  @include header(dark);
 
   &__content {
     display: flex;
@@ -159,33 +18,18 @@ a {
       margin-bottom: 80px;
 
       &-header {
-        @include font($font-georgia, 44px);
-        color: $color-white-1;
-        line-height: 130%;
+        @include h2;
+        color: $color-light-xl;
       }
 
       &-paragraph {
         margin: 41px 0;
-        @include font($font-arial, 15px);
-        color: $color-gray-1;
-        line-height: 160%;
+        @include paragraph-l;
+        color: $color-dark-s;
       }
 
       &-link {
-        display: inline-block;
-        padding: 15px 45px;
-        background-color: $color-orange-1;
-        border-radius: 100px;
-        @include font($font-georgia, 17px);
-        color: $color-black-4;
-        line-height: 130%;
-        letter-spacing: 0.06em;
-        cursor: pointer;
-        transition: all $transition-default;
-
-        &:hover {
-          background-color: $color-orange-2;
-        }
+        @include button-text(dark);
       }
     }
 
@@ -210,17 +54,14 @@ a {
       text-align: left;
 
       &-header {
-        @include font($font-georgia, 35px);
-        line-height: 130%;
-        letter-spacing: 0.06em;
-        color: $color-black-1;
+        @include h3;
+        color: $color-dark-l;
         margin-top: 2px;
       }
 
       &-paragraph {
-        @include font($font-arial, 15px);
-        line-height: 160%;
-        color: $color-black-2;
+        @include paragraph-l;
+        color: $color-dark-xl;
         margin-bottom: 4px;
 
         &:first-of-type {
@@ -233,134 +74,22 @@ a {
 
 .section-our-friends {
   padding-top: 80px;
-  padding-bottom: 100px;
-  background-color: $color-white-3;
+  padding-bottom: 98px;
+  background-color: $color-light-l;
 
   &__content {
     &-header {
-      @include font($font-georgia, 35px);
-      color: $color-black-1;
-      line-height: 130%;
-      letter-spacing: 0.06em;
+      @include h3;
+      color: $color-dark-l;
     }
 
     &-slider {
       margin: 60px 0;
-      display: flex;
-      justify-content: center;
-      position: relative;
-
-      &-nav {
-        position: absolute;
-        top: 50%;
-        width: 100%;
-
-        &-button {
-          height: 52px;
-          width: 52px;
-          border: 2px solid $color-orange-1;
-          border-radius: 50%;
-          background-position: center;
-          background-repeat: no-repeat;
-          cursor: pointer;
-          transition: all $transition-default;
-          position: absolute;
-          transform: translateY(-50%);
-
-          &--left {
-            background-image: url('../../assets/images/section-our-friends/icons/arrow-left.svg');
-            left: 0;
-          }
-
-          &--right {
-            background-image: url('../../assets/images/section-our-friends/icons/arrow-right.svg');
-            right: 0;
-          }
-
-          &:hover {
-            border-color: $color-orange-2;
-            background-color: $color-orange-2;
-          }
-        }
-      }
-
-      &-collection {
-        display: flex;
-
-        &-item {
-          margin: 0 45px;
-          background-color: $color-white-2;
-          border-radius: 9px;
-          overflow: hidden;
-          cursor: pointer;
-
-          &-description {
-            padding: 28px;
-
-            &-name {
-              @include font($font-georgia, 20px);
-              color: $color-black-1;
-              line-height: 115%;
-              letter-spacing: 0.06em;
-            }
-
-            &-link {
-              display: inline-block;
-              margin-top: 30px;
-              border: 2px solid #f1cdb3;
-              border-radius: 100px;
-              padding: 13px 42px;
-              @include font($font-georgia, 17px);
-              color: $color-black-4;
-              line-height: 130%;
-              letter-spacing: 0.06em;
-              cursor: pointer;
-              position: relative;
-              overflow: hidden;
-              z-index: 1;
-
-              &::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                height: 100%;
-                width: 100%;
-                background-color: $color-orange-2;
-                transform: scaleX(0);
-                transition: all $transition-short;
-                z-index: -1;
-              }
-
-              &:hover {
-                border: 2px solid $color-orange-2;
-
-                &::before {
-                  transform: none;
-                }
-              }
-            }
-          }
-        }
-
-      }
+      @include slider-line;
     }
 
     &-link {
-      display: inline-block;
-      padding: 15px 45px;
-      background-color: $color-orange-1;
-      @include font($font-georgia, 17px);
-      line-height: 130%;
-      letter-spacing: 0.06em;
-      color: $color-black-4;
-      border-radius: 100px;
-      cursor: pointer;
-      transition: all $transition-default;
-
-      &:hover {
-        background-color: $color-orange-2;
-      }
+      @include button-text(dark, false);
     }
   }
 }
@@ -371,10 +100,8 @@ a {
 
   &__content {
     &-header {
-      @include font($font-georgia, 35px);
-      color: $color-black-1;
-      line-height: 130%;
-      letter-spacing: 0.06em;
+      @include h3;
+      color: $color-dark-l;
     }
 
     &-collection {
@@ -395,10 +122,8 @@ a {
           margin-top: 28px;
 
           &-text {
-            @include font($font-georgia, 20px);
-            color: $color-black-1;
-            line-height: 115%;
-            letter-spacing: 0.06em;
+            @include h4;
+            color: $color-dark-l;
           }
         }
       }
@@ -407,9 +132,9 @@ a {
 }
 
 .section-in-addition {
-  padding-top: 83px;
+  padding-top: 82px;
   padding-bottom: 102px;
-  background-color: $color-white-3;
+  background-color: $color-light-s;
 
   &__content {
     display: flex;
@@ -422,23 +147,19 @@ a {
       width: 380px;
 
       &-header {
-        @include font($font-georgia, 35px);
-        color: $color-black-1;
-        line-height: 130%;
-        letter-spacing: 0.06em;
+        @include h3;
+        color: $color-dark-l;
       }
 
       &-text {
         margin-top: 20px;
-        @include font($font-georgia, 15px);
-        color: $color-black-1;
-        line-height: 110%;
-        letter-spacing: 0.06em;
+        @include h5;
+        color: $color-dark-l;
       }
 
       &-link {
         margin-top: 19px;
-        background-color: $color-orange-1;
+        background-color: $color-primary;
         border-radius: 9px;
         padding: 10px 15px;
         display: flex;
@@ -448,7 +169,7 @@ a {
         transition: all $transition-short;
 
         &:hover {
-          background-color: $color-orange-2;
+          background-color: $color-primary-light;
         }
 
         &-logo {
@@ -459,72 +180,22 @@ a {
         }
 
         &-text {
-          @include font($font-georgia, 20px);
-          color: $color-black-1;
-          line-height: 115%;
-          letter-spacing: 0.06em;
+          @include h4;
+          color: $color-dark-l;
           margin-left: 15px;
         }
       }
 
       &-footer {
         margin-top: 20px;
-        @include font($font-arial, 12px, 'normal', 'italic');
-        color: $color-gray-2;
-        line-height: 150%;
+        @include paragraph-s;
+        color: $color-dark-m;
+        font-style: italic;
       }
     }
   }
 }
 
 .section-footer {
-  background: url('../../assets/images/section-footer/background.png'), radial-gradient(110.67% 538.64% at 5.73% 50%, #513D2F 0%, #1A1A1C 100%), #211F20;
-  padding-top: 40px;
-
-  &__content {
-    display: flex;
-    justify-content: space-between;
-
-    &-block {
-      text-align: left;
-      padding-top: 16px;
-
-      $parentBlock: &;
-
-      &--second {
-        margin-left: -6px;
-      }
-
-      &-header {
-        @include font($font-georgia, 35px);
-        color: $color-white-1;
-        line-height: 130%;
-        letter-spacing: 0.06em;
-      }
-
-      &-link {
-        display: flex;
-        align-items: center;
-        width: max-content;
-        margin-top: 40px;
-        cursor: pointer;
-
-        #{$parentBlock}--second & {
-          margin-top: 33px;
-        }
-
-        &-text {
-          margin-left: 20px;
-          @include font($font-georgia, 20px);
-          color: $color-orange-1;
-          line-height: 115%;
-          letter-spacing: 0.06em;
-        }
-      }
-
-      &-image {
-        display: flex;
-      }
-    }
-  }
+  @include footer;
 }
