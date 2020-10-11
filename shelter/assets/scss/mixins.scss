@@ -35,7 +35,7 @@
 }
 
 @mixin h3-mobile {
-  @include font($font-georgia, 35px, 130%);
+  @include font($font-georgia, 25px, 130%);
   letter-spacing: $letter-spacing-default;
 }
 
@@ -67,18 +67,27 @@
   letter-spacing: $letter-spacing-wide;
 }
 
-@mixin button-text($theme: light) {
+@mixin button-text($theme: light, $withBorder: true) {
+  $isDark: if($theme != light, true, false);
+
+  $buttonBackgroundColor: if($isDark, $color-primary, transparent);
+  $buttonPaddings: if($withBorder, 13px 42px, 15px 45px);
+
   display: inline-block;
-  border: 2px solid $color-primary;
   border-radius: 100px;
-  padding: 13px 42px;
+  padding: $buttonPaddings;
   @include font($font-georgia, 17px, 130%);
+  letter-spacing: $letter-spacing-default;
+  background-color: $buttonBackgroundColor;
   color: $color-dark-3xl;
-  letter-spacing: 0.06em;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   z-index: 1;
+
+  @if $withBorder {
+    border: 2px solid $color-primary;
+  }
 
   &::before {
     content: '';
@@ -88,13 +97,16 @@
     height: 100%;
     width: 100%;
     background-color: $color-primary-light;
-    transform: scaleX(0);
+    border-radius: 100px;
+    transform: scale(0);
     transition: all $transition-short;
     z-index: -1;
   }
 
   &:hover {
-    border: 2px solid $color-primary-light;
+    @if $withBorder {
+      border: 2px solid $color-primary-light;
+    }
 
     &::before {
       transform: none;
@@ -113,10 +125,15 @@
   cursor: default;
   user-select: none;
 
-  &:not(&--position):not(&--inactive):hover {
+  &:not(&--inactive):hover {
     border-color: $color-primary-light;
     background-color: $color-primary-light;
     cursor: pointer;
+
+    &:active {
+      border-color: $color-primary;
+      background-color: $color-primary;
+    }
   }
 }
 
@@ -245,6 +262,27 @@
   }
 }
 
+@mixin slider-item {
+  background-color: $color-light-s;
+  border-radius: 9px;
+  overflow: hidden;
+  cursor: pointer;
+
+  &-description {
+    padding: 28px;
+
+    &-name {
+      @include h4;
+      color: $color-dark-l;
+    }
+
+    &-button {
+      margin-top: 30px;
+      @include button-text;
+    }
+  }
+}
+
 @mixin slider-full() {
   &-nav {
     margin-top: 60px;
@@ -259,7 +297,7 @@
       align-items: center;
       justify-content: center;
 
-      &--position {
+      &--active {
         background-color: $color-primary;
       }
 
@@ -273,29 +311,50 @@
   &-collection {
     display: grid;
     grid-template-columns: repeat(4, 270px);
-    flex-wrap: wrap;
     justify-content: space-between;
     row-gap: 30px;
 
     &-item {
-      background-color: $color-light-s;
-      border-radius: 9px;
-      overflow: hidden;
-      cursor: pointer;
+      @include slider-item;
+    }
+  }
+}
 
-      &-description {
-        padding: 28px;
+@mixin slider-line {
+  display: flex;
+  justify-content: center;
+  position: relative;
 
-        &-name {
-          @include h4;
-          color: $color-dark-l;
-        }
+  &-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
 
-        &-button {
-          margin-top: 30px;
-          @include button-text;
-        }
+    &-button {
+      @include button-circle;
+      position: absolute;
+      transform: translateY(-50%);
+
+      &--left {
+        background-image: url('../../assets/images/section-our-friends/icons/arrow-left.svg');
+        left: 0;
+      }
+
+      &--right {
+        background-image: url('../../assets/images/section-our-friends/icons/arrow-right.svg');
+        right: 0;
       }
     }
+  }
+
+  &-collection {
+    display: grid;
+    grid-template-columns: repeat(3, 270px);
+    column-gap: 90px;
+
+    &-item {
+      @include slider-item;
+    }
+
   }
 }
