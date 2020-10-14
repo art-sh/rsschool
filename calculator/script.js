@@ -15,6 +15,7 @@ class Calculator {
     this.isError = false;
     this.isSingleOperator = false;
     this.readyToReset = false;
+    this.updateDisplay();
   }
 
   delete() {
@@ -90,11 +91,14 @@ class Calculator {
         result = prev ** current;
         break;
       case '√':
-        if (prev < 0) {
-          this.isError = true;
-        } else {
+        if (current > 0) {
+          result = Math.sqrt(current);
+          this.isSingleOperator = true;
+        } else if (prev > 0) {
           result = Math.sqrt(prev);
           this.isSingleOperator = true;
+        } else {
+          this.isError = true;
         }
         break;
       default:
@@ -127,14 +131,10 @@ class Calculator {
   }
 
   updateDisplay() {
-    this.currentOperandTextElement.innerText =
-      this.getDisplayNumber(this.currentOperand)
-    if (this.operation != null || this.isSingleOperator) {
-      this.previousOperandTextElement.innerText =
-        `${this.getDisplayNumber(this.previousOperand)} ${this.operation || ''}`
-    } else {
-      this.previousOperandTextElement.innerText = ''
-    }
+    this.currentOperandTextElement.innerText = this.getDisplayNumber(this.currentOperand) || '0';
+    this.previousOperandTextElement.innerText = (this.operation != null || this.isSingleOperator)
+        ? `${this.getDisplayNumber(this.previousOperand)} ${this.operation || ''}`
+        : '';
   }
 }
 
