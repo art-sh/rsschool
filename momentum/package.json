@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "server": "cross-env NODE_ENV=development webpack-dev-server --mode development --inline --hot",
+    "server": "cross-env NODE_ENV=development webpack-dev-server --mode development --inline --hot --host 192.168.100.100",
     "dev": "cross-env NODE_ENV=development webpack-cli --mode development",
     "build": "cross-env NODE_ENV=production webpack-cli --mode production"
   },

@@ -6,6 +6,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -42,8 +43,9 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    background-color: $color-black;
     transform: scale(1.025);
-    transition: background $transition-long, filter $transition-long;
+    transition: background $transition-default, filter $transition-long;
     filter: blur(2px) brightness(75%) saturate(150%);
     z-index: -1;
 
@@ -82,13 +84,12 @@ body {
     &-wrapper {
       overflow-y: auto;
       width: 85%;
-      height: 100%;
-      max-height: 810px;
+      height: 810px;
       padding: 1rem 0;
 
       @include media-sm {
         width: 100%;
-        max-height: 742px;
+        height: 766px;
       }
     }
 

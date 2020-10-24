@@ -50,7 +50,6 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: (chunk) => `index${isDev ? '' : '.[contenthash]'}.js`,
-    publicPath: './',
   },
   devServer: {
     contentBase: path.resolve(__dirname, 'dist'),

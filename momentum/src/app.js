@@ -417,7 +417,7 @@ class Momentum {
 
     for (let key in this.currentPeriod) {
       Object.values(this.currentPeriod[key].periodImages)
-        .forEach((background) => allBackgrounds.push(background));
+        .forEach((background) => allBackgrounds.push(background.slice(2)));
     }
 
     return allBackgrounds.reduce((out, background, index) => {
