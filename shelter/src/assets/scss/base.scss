@@ -23,6 +23,16 @@ a {
   max-width: 1280px;
   text-align: center;
   margin: 0 auto;
+
+  @include media-md {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  @include media-sm {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
 
 .section__container {

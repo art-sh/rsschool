@@ -8,8 +8,6 @@ const OptimizeAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin'
 const isDev = process.env.NODE_ENV === 'development'
 const isProd = !isDev
 
-console.log('isDev', isDev);
-
 const styleLoaders = (extendedLoader) => {
   const loaders = [
     {
