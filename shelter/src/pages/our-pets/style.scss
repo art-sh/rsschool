@@ -8,21 +8,28 @@
   background-color: $color-light-xl;
   z-index: 5;
 
+  .menu-open & {
+    position: static;
+    padding-top: 90px;
+
+    @include header(dark);
+  }
+
   @include header(light);
 }
 
 .our-friends {
   background-color: $color-light-l;
   padding-top: 80px;
-  padding-bottom: 100px;
+  padding-bottom: 98px;
 
   @include media-md {
-    padding-bottom: 76px;;
+    padding-bottom: 74px;;
   }
 
   @include media-sm {
     padding-top: 42px;
-    padding-bottom: 44px;
+    padding-bottom: 42px;
   }
 
   &__content {

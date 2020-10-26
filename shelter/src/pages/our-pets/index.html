@@ -8,127 +8,110 @@
 <body>
 <main class="main__wrapper">
   <div class="section__wrapper section-header">
-    <header class="section__container section-header__header">
-      <div class="section-header__header-content">
-        <h1 class="section-header__header-content-text">Cozy House</h1>
-        <h2 class="section-header__header-content-description">Shelter for pets in Boston</h2>
-      </div>
-      <nav class="section-header__header-navigation">
-        <ul class="section-header__header-navigation-collection">
-          <li
-            class="section-header__header-navigation-collection-item">
-            <a class="section-header__header-navigation-collection-item-link" href="../../pages/main">About the
-              shelter</a>
-          </li>
-          <li
-            class="section-header__header-navigation-collection-item section-header__header-navigation-collection-item--active">
-            <a class="section-header__header-navigation-collection-item-link" href="#">Our pets</a>
-          </li>
-          <li class="section-header__header-navigation-collection-item">
-            <a class="section-header__header-navigation-collection-item-link" href="#">Help the shelter</a>
-          </li>
-          <li class="section-header__header-navigation-collection-item">
-            <a class="section-header__header-navigation-collection-item-link" href="#">Contacts</a>
-          </li>
-        </ul>
-      </nav>
-      <div class="section-not-only__header-mobile">
-        <input id="menu" class="section-not-only__header-mobile-checkbox" type="checkbox" hidden>
-        <label class="section-not-only__header-mobile-button" for="menu">
-          <span class="section-not-only__header-mobile-button-content"></span>
-        </label>
-        <nav class="section-not-only__header-mobile-navigation">
-          <ul class="section-not-only__header-mobile-navigation-collection">
+    <div class="section__container">
+      <header class="section-header__header">
+        <div class="section-header__header-content">
+          <h1 class="section-header__header-content-text">Cozy House</h1>
+          <h2 class="section-header__header-content-description">Shelter for pets in Boston</h2>
+        </div>
+        <nav class="section-header__header-navigation">
+          <ul class="section-header__header-navigation-collection">
             <li
-              class="section-not-only__header-mobile-navigation-collection-item section-not-only__header-mobile-navigation-collection-item--active">
-              <a class="section-not-only__header-mobile-navigation-collection-item-link" href="../../pages/main">About
-                the shelter</a>
+              class="section-header__header-navigation-collection-item">
+              <a class="section-header__header-navigation-collection-item-link redirect-main" href="#">About the
+                shelter</a>
             </li>
-            <li class="section-not-only__header-mobile-navigation-collection-item">
-              <a class="section-not-only__header-mobile-navigation-collection-item-link" href="#">Our pets</a>
+            <li
+              class="section-header__header-navigation-collection-item section-header__header-navigation-collection-item--active">
+              <a class="section-header__header-navigation-collection-item-link" href="#">Our pets</a>
             </li>
-            <li class="section-not-only__header-mobile-navigation-collection-item">
-              <a class="section-not-only__header-mobile-navigation-collection-item-link" href="#">Help the shelter</a>
+            <li class="section-header__header-navigation-collection-item">
+              <a class="section-header__header-navigation-collection-item-link" href="#">Help the shelter</a>
             </li>
-            <li class="section-not-only__header-mobile-navigation-collection-item">
-              <a class="section-not-only__header-mobile-navigation-collection-item-link" href="#">Contacts</a>
+            <li class="section-header__header-navigation-collection-item">
+              <a class="section-header__header-navigation-collection-item-link" href="#">Contacts</a>
             </li>
           </ul>
         </nav>
-      </div>
-    </header>
+        <div class="section-header__header-mobile">
+          <div id="menu-open" class="section-header__header-mobile-button">
+            <span class="section-header__header-mobile-button-content"></span>
+          </div>
+        </div>
+      </header>
+    </div>
   </div>
   <section class="section__wrapper our-friends">
     <div class="section__container our-friends__content">
       <h2 class="our-friends__content-header">Our friends who<br>are looking for a house</h2>
       <div class="our-friends__content-slider">
         <div class="our-friends__content-slider-collection">
-          <div class="our-friends__content-slider-collection-item">
+          <div class="our-friends__content-slider-collection-item" data-item="Katrine">
             <figure class="our-friends__content-slider-collection-item-image">
-              <img src="../../assets/images/section-our-friends/katrine.png" alt="katrine">
+              <img src="../../assets/images/section-our-friends/katrine.png" alt="Katrine">
             </figure>
             <div class="our-friends__content-slider-collection-item-description">
               <div class="our-friends__content-slider-collection-item-description-name">Katrine</div>
               <a href="#" class="our-friends__content-slider-collection-item-description-button">Learn more</a>
             </div>
           </div>
-          <div class="our-friends__content-slider-collection-item">
+          <div class="our-friends__content-slider-collection-item" data-item="Jennifer">
             <figure class="our-friends__content-slider-collection-item-image">
-              <img src="../../assets/images/section-our-friends/jennifer.png" alt="jennifer">
+              <img src="../../assets/images/section-our-friends/jennifer.png" alt="Jennifer">
             </figure>
             <div class="our-friends__content-slider-collection-item-description">
               <div class="our-friends__content-slider-collection-item-description-name">Jennifer</div>
               <a href="#" class="our-friends__content-slider-collection-item-description-button">Learn more</a>
             </div>
           </div>
-          <div class="our-friends__content-slider-collection-item">
+          <div class="our-friends__content-slider-collection-item" data-item="Woody">
             <figure class="our-friends__content-slider-collection-item-image">
-              <img src="../../assets/images/section-our-friends/woody.png" alt="woody">
+              <img src="../../assets/images/section-our-friends/woody.png" alt="Woody">
             </figure>
             <div class="our-friends__content-slider-collection-item-description">
               <div class="our-friends__content-slider-collection-item-description-name">Woody</div>
               <a href="#" class="our-friends__content-slider-collection-item-description-button">Learn more</a>
             </div>
           </div>
-          <div class="our-friends__content-slider-collection-item">
+          <div class="our-friends__content-slider-collection-item" data-item="Sophia">
             <figure class="our-friends__content-slider-collection-item-image">
-              <img src="../../assets/images/section-our-friends/sophia.png" alt="sophia">
+              <img src="../../assets/images/section-our-friends/sophia.png" alt="Sophia">
             </figure>
             <div class="our-friends__content-slider-collection-item-description">
               <div class="our-friends__content-slider-collection-item-description-name">Sophia</div>
               <a href="#" class="our-friends__content-slider-collection-item-description-button">Learn more</a>
             </div>
           </div>
-          <div class="our-friends__content-slider-collection-item">
+          <div class="our-friends__content-slider-collection-item" data-item="Timmy">
             <figure class="our-friends__content-slider-collection-item-image">
-              <img src="../../assets/images/section-our-friends/timmy.png" alt="timmy">
+              <img src="../../assets/images/section-our-friends/timmy.png" alt="Timmy">
             </figure>
             <div class="our-friends__content-slider-collection-item-description">
               <div class="our-friends__content-slider-collection-item-description-name">Timmy</div>
               <a href="#" class="our-friends__content-slider-collection-item-description-button">Learn more</a>
             </div>
           </div>
-          <div class="our-friends__content-slider-collection-item">
+          <div class="our-friends__content-slider-collection-item" data-item="Charly">
             <figure class="our-friends__content-slider-collection-item-image">
-              <img src="../../assets/images/section-our-friends/charly.png" alt="charly">
+              <img src="../../assets/images/section-our-friends/charly.png" alt="Charly">
             </figure>
             <div class="our-friends__content-slider-collection-item-description">
               <div class="our-friends__content-slider-collection-item-description-name">Charly</div>
               <a href="#" class="our-friends__content-slider-collection-item-description-button">Learn more</a>
             </div>
           </div>
-          <div class="our-friends__content-slider-collection-item">
+          <div class="our-friends__content-slider-collection-item" data-item="Scarlett">
             <figure class="our-friends__content-slider-collection-item-image">
-              <img src="../../assets/images/section-our-friends/scarlett.png" alt="scarlett">
+              <img src="../../assets/images/section-our-friends/scarlett.png" alt="Scarlett">
             </figure>
             <div class="our-friends__content-slider-collection-item-description">
               <div class="our-friends__content-slider-collection-item-description-name">Scarlett</div>
               <a href="#" class="our-friends__content-slider-collection-item-description-button">Learn more</a>
             </div>
           </div>
-          <div class="our-friends__content-slider-collection-item">
+          <div class="our-friends__content-slider-collection-item" data-item="Freddie">
             <figure class="our-friends__content-slider-collection-item-image">
-              <img src="../../assets/images/section-our-friends/freddie.png" alt="freddie">
+              <img src="../../assets/images/section-our-friends/freddie.png" alt="Freddie">
             </figure>
             <div class="our-friends__content-slider-collection-item-description">
               <div class="our-friends__content-slider-collection-item-description-name">Freddie</div>
@@ -146,7 +129,7 @@
           <span
             class="our-friends__content-slider-nav-item our-friends__content-slider-nav-item--next">&gt</span>
           <span
-            class="our-friends__content-slider-nav-item our-friends__content-slider-nav-item--first">&gt&gt</span>
+            class="our-friends__content-slider-nav-item our-friends__content-slider-nav-item--last">&gt&gt</span>
         </div>
       </div>
     </div>

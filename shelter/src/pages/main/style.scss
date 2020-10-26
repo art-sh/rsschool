@@ -8,6 +8,10 @@
     padding-top: 30px;
   }
 
+  .menu-open & {
+    padding-top: 90px;
+  }
+
   @include header(dark);
 
   &__content {

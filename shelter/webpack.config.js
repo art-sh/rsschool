@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 const OptimizeAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const isProd = !isDev
@@ -120,16 +121,23 @@ module.exports = {
       template: 'pages/main/index.html',
       filename: 'pages/main/index.html',
       minify: isProd,
-      favicon: 'assets/images/icons/favicon.ico'
+      favicon: 'assets/images/icons/favicon.ico',
+      chunks: ['main'],
     }),
     new HTMLWebpackPlugin({
       template: 'pages/our-pets/index.html',
       filename: 'pages/our-pets/index.html',
       minify: isProd,
-      favicon: 'assets/images/icons/favicon.ico'
+      favicon: 'assets/images/icons/favicon.ico',
+      chunks: ['our-pets'],
     }),
     new MiniCssExtractPlugin({
       filename: `pages/[name]/style${isDev ? '' : '.[contenthash]'}.css`,
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {from: path.resolve(__dirname, 'src/assets/images'), to: 'assets/images'},
+      ]
+    })
   ]
 }
