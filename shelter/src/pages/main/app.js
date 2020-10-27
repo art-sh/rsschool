@@ -15,7 +15,7 @@ new Popup({
 const redirectToPets = (e) => {
   e.preventDefault();
 
-  window.location.pathname = '/pages/our-pets';
+  window.location.pathname = `${window.location.pathname}../../pages/our-pets/`;
 }
 
 document

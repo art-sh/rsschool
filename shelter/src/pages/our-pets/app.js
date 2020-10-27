@@ -19,7 +19,7 @@ new Pagination({
 const redirectToMain = (e) => {
   e.preventDefault();
 
-  window.location.pathname = '/pages/main';
+  window.location.pathname = `${window.location.pathname}../../pages/main/`;
 }
 
 document

@@ -72,13 +72,13 @@ export default class Pagination {
 
         let item = arr.filter((item) => item.name === minName)[0];
 
+        if (this.isInArray(itemOut, item))
+          continue;
+
         unique.forEach((item) => {
           if (item.name === minName)
             item.count++;
         });
-
-        if (this.isInArray(itemOut, item))
-          continue;
 
         itemOut.push(item);
       }
