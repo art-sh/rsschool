@@ -14,6 +14,7 @@ export default class Pagination {
     this.currentPosition = document.querySelector(`.${props.currentPosition}`);
 
     this.setListeners();
+    window.dispatchEvent(new Event('resize'));
   }
 
   get currentIndex() {
@@ -96,11 +97,11 @@ export default class Pagination {
 
   setListeners() {
     window.addEventListener('resize', () => {
-      let currentSet = (window.innerWidth > 1279)
-        ? 'eight'
-        : (window.innerWidth > 767)
+      let currentSet = (window.innerWidth < 768)
+        ? 'three'
+        : (window.innerWidth < 1280)
           ? 'six'
-          : 'three';
+          : 'eight';
 
       if (this.currentSet !== currentSet) {
         this.currentSet = currentSet;
@@ -133,6 +134,7 @@ export default class Pagination {
       dataSet.forEach((config) => this.collectionElement.append(this.getSlideElement(config)));
 
       this.handleNavClasses();
+
       setTimeout(() => {
         document.body.classList.remove('loading');
         this.isChangingSlide = false;

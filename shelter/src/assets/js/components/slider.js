@@ -13,10 +13,16 @@ export default class Slider {
   }
 
   changeSlide() {
-    this.genNewCollection();
-    this.collection.innerHTML = '';
+    this.collection.classList.add('loading');
 
-    this.currentCollection.forEach((config) => this.collection.append(this.generateNewItem(config)));
+    setTimeout(() => {
+      this.genNewCollection();
+      this.collection.innerHTML = '';
+
+      this.currentCollection.forEach((config) => this.collection.append(this.generateNewItem(config)));
+
+      setTimeout(() => this.collection.classList.remove('loading'), 0);
+    }, 250);
   }
 
   generateNewItem(config) {

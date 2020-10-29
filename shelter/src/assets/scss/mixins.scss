@@ -163,7 +163,7 @@
   }
 }
 
-@mixin menu-item($colorLink, $colorLinkActive) {
+@mixin menu-item($colorLink, $colorLinkActive, $isDark: false) {
   list-style: none;
   margin-left: 36px;
   position: relative;
@@ -193,12 +193,20 @@
     cursor: pointer;
     transition: all $transition-short;
 
+    $link: &;
+
     @include media-sm {
       @include paragraph-mobile-menu;
     }
 
     #{$parentBlock}:hover &, #{$parentBlock}--active & {
       color: $colorLinkActive;
+    }
+
+    @if ($isDark == false) {
+      #{$parentBlock}:active &, #{$parentBlock}--active & {
+        color: $colorLink;
+      }
     }
   }
 }
@@ -253,7 +261,7 @@
         display: flex;
 
         &-item {
-          @include menu-item($colorLink, $colorLinkActive);
+          @include menu-item($colorLink, $colorLinkActive, $isDark);
         }
       }
     }
@@ -418,10 +426,11 @@
   border-radius: 9px;
   overflow: hidden;
   cursor: pointer;
-  transition: background $transition-short;
+  transition: background $transition-short, box-shadow $transition-short;
 
   &:hover {
     background-color: $color-light-xl;
+    box-shadow: 0px 2px 35px 14px rgba(13, 13, 13, 0.04);
   }
 
   &-image {
@@ -470,12 +479,16 @@
       }
 
       &--active {
-        background-color: $color-primary;
+        background-color: $color-primary !important;
+        border-color: $color-primary !important;
+        cursor: initial !important;
       }
 
       &--inactive {
-        border-color: $color-dark-s;
-        color: $color-dark-s;
+        border-color: $color-dark-s !important;
+        color: $color-dark-s !important;
+        cursor: initial !important;
+        background-color: unset !important;
       }
     }
   }
@@ -533,7 +546,7 @@
       margin-top: 20px;
       height: 52px;
       display: flex;
-      column-gap: 28%;
+      column-gap: 80px;
       justify-content: center;
     }
 
@@ -575,11 +588,17 @@
 
     &-item {
       @include slider-item;
+      opacity: 1;
+      transition: background $transition-short, box-shadow $transition-short, opacity $transition-short;
 
       @include media-md {
         &:last-of-type {
           display: none;
         }
+      }
+
+      .loading & {
+        opacity: 0;
       }
 
       @include media-sm {

@@ -11,7 +11,10 @@ export default class Menu {
     button.addEventListener('click', this.menuToggle.bind(this));
   }
 
-  menuToggle() {
+  menuToggle(e) {
+    if (e.target.classList.contains('click-ignore'))
+      return;
+
     let action = this.isOpen ? 'remove' : 'add';
 
     this.buttonElement.classList[action]('menu-open');
@@ -53,10 +56,10 @@ export default class Menu {
             >Our pets</a>
         </li>
         <li class="menu__container-block-navigation-collection-item">
-          <a class="menu__container-block-navigation-collection-item-link" href="#">Help the shelter</a>
+          <a class="menu__container-block-navigation-collection-item-link click-ignore" href="#">Help the shelter</a>
         </li>
         <li class="menu__container-block-navigation-collection-item">
-          <a class="menu__container-block-navigation-collection-item-link" href="#">Contacts</a>
+          <a class="menu__container-block-navigation-collection-item-link click-ignore" href="#">Contacts</a>
         </li>
       </ul>`;
     menuNavigation
