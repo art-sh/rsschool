@@ -235,12 +235,15 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      cursor: pointer;
 
       &-text {
         @include logo_title;
         color: $colorTitle;
         margin: 0;
+
+        @if ($isDark == false) {
+          cursor: pointer;
+        }
       }
 
       &-description {
@@ -288,7 +291,7 @@
         row-gap: 8px;
         flex-direction: column;
         cursor: pointer;
-        transition: transform $transition-long;
+        transition: transform $transition-default;
 
         $button: &;
 
@@ -428,7 +431,7 @@
   cursor: pointer;
   transition: background $transition-short, box-shadow $transition-short;
 
-  &:hover {
+  &:hover, &.active {
     background-color: $color-light-xl;
     box-shadow: 0px 2px 35px 14px rgba(13, 13, 13, 0.04);
   }
@@ -648,7 +651,7 @@
       left: 100%;
       top: 0;
       background-color: $color-dark-3xl;
-      transition: all $transition-short;
+      transition: all $transition-default;
       display: flex;
       flex-direction: column;
       will-change: transform;
@@ -704,7 +707,12 @@
       visibility: hidden;
       z-index: -1;
       background-color: $color-dark-3xl;
-      transition: opacity $transition-short;
+      transition: opacity $transition-short, background $transition-short;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $color-dark-2xl;
+      }
 
       #{$container}.active & {
         z-index: 1;

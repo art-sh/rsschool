@@ -3,7 +3,6 @@ import pets from '../config.json';
 export default class Pagination {
   constructor(props) {
     this.arrays = this.generateArray();
-    this.currentSet = 'eight';
 
     this.collectionBaseClass = props.collectionBaseClass;
     this.collectionElement = document.querySelector(`.${props.collectionBaseClass}`);
@@ -96,18 +95,32 @@ export default class Pagination {
   }
 
   setListeners() {
-    window.addEventListener('resize', () => {
-      let currentSet = (window.innerWidth < 768)
-        ? 'three'
-        : (window.innerWidth < 1280)
-          ? 'six'
-          : 'eight';
+    const resizeHandler = () => {
+      let timeout = null;
 
-      if (this.currentSet !== currentSet) {
-        this.currentSet = currentSet;
-        this.currentIndex = 0;
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout);
+
+          timeout = null;
+        }
+
+        timeout = setTimeout(() => {
+          let currentSet = (window.innerWidth < 768)
+            ? 'three'
+            : (window.innerWidth < 1280)
+              ? 'six'
+              : 'eight';
+
+          if (this.currentSet !== currentSet) {
+            this.currentSet = currentSet;
+            this.currentIndex = 0;
+          }
+        }, 0);
       }
-    })
+    }
+
+    window.addEventListener('resize', resizeHandler.call(this));
 
     this.navFirst.addEventListener('click', () => {
       if (this.currentIndex)
@@ -164,18 +177,33 @@ export default class Pagination {
     if (!this.currentIndex) {
       this.navFirst.classList.add(inactiveClass);
       this.navPrev.classList.add(inactiveClass);
+      this.navFirst.setAttribute('disabled', 'true');
+      this.navPrev.setAttribute('disabled', 'true');
+
       this.navNext.classList.remove(inactiveClass);
       this.navLast.classList.remove(inactiveClass);
+      this.navNext.removeAttribute('disabled');
+      this.navLast.removeAttribute('disabled');
     } else if (this.currentIndex === this.arrays[this.currentSet].length - 1) {
       this.navFirst.classList.remove(inactiveClass);
       this.navPrev.classList.remove(inactiveClass);
+      this.navFirst.removeAttribute('disabled');
+      this.navPrev.removeAttribute('disabled');
+
       this.navNext.classList.add(inactiveClass);
       this.navLast.classList.add(inactiveClass);
+      this.navNext.setAttribute('disabled', 'true');
+      this.navLast.setAttribute('disabled', 'true');
     } else if (this.currentIndex) {
       this.navFirst.classList.remove(inactiveClass);
       this.navPrev.classList.remove(inactiveClass);
       this.navNext.classList.remove(inactiveClass);
       this.navLast.classList.remove(inactiveClass);
+
+      this.navFirst.removeAttribute('disabled');
+      this.navPrev.removeAttribute('disabled');
+      this.navNext.removeAttribute('disabled');
+      this.navLast.removeAttribute('disabled');
     }
   }
 }

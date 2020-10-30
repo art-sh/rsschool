@@ -1,3 +1,5 @@
+import Redirects from '../redirects.js';
+
 export default class Menu {
   constructor(button) {
     this.buttonElement = button;
@@ -11,10 +13,7 @@ export default class Menu {
     button.addEventListener('click', this.menuToggle.bind(this));
   }
 
-  menuToggle(e) {
-    if (e.target.classList.contains('click-ignore'))
-      return;
-
+  menuToggle() {
     let action = this.isOpen ? 'remove' : 'add';
 
     this.buttonElement.classList[action]('menu-open');
@@ -44,15 +43,13 @@ export default class Menu {
       `<ul class="menu__container-block-navigation-collection">
         <li
           class="menu__container-block-navigation-collection-item ${this.getItemActiveClass('pages/main')}">
-          <a class="menu__container-block-navigation-collection-item-link"
-            href="${this.getLinkPath('pages/main')}"
-            onclick="Menu.isCurrentPage('pages/main') && Menu.scrollTop()"
+          <a class="menu__container-block-navigation-collection-item-link" href="#"
+            onclick="Menu.handleMenuItemClick.call(Menu, 'pages/main', 'main')"
             >About the shelter</a>
         </li>
         <li class="menu__container-block-navigation-collection-item ${this.getItemActiveClass('pages/our-pets')}">
-          <a class="menu__container-block-navigation-collection-item-link"
-            href="${this.getLinkPath('pages/our-pets')}"
-            onclick="Menu.isCurrentPage('pages/main') && Menu.scrollTop()"
+          <a class="menu__container-block-navigation-collection-item-link" href="#"
+            onclick="Menu.handleMenuItemClick.call(Menu, 'pages/our-pets', 'pets')"
             >Our pets</a>
         </li>
         <li class="menu__container-block-navigation-collection-item">
@@ -62,9 +59,6 @@ export default class Menu {
           <a class="menu__container-block-navigation-collection-item-link click-ignore" href="#">Contacts</a>
         </li>
       </ul>`;
-    menuNavigation
-      .querySelectorAll('.menu__container-block-navigation-collection-item')
-      .forEach((link) => link.addEventListener('click', this.menuToggle.bind(this)));
 
 
     menuContent.append(menuNavigation);
@@ -87,8 +81,15 @@ export default class Menu {
       : '';
   }
 
-  getLinkPath(page) {
-    return this.isCurrentPage(page) ? '#' : `../../${page}`;
+  handleMenuItemClick(page, pageToRedirect) {
+    if (!this.isCurrentPage(page)) {
+      Redirects[pageToRedirect]();
+
+      return;
+    }
+
+    this.scrollTop();
+    this.menuToggle();
   }
 
   scrollTop() {

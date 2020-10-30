@@ -4,6 +4,7 @@ export default class Popup {
   constructor(props) {
     this.popup = this.buildPopup();
     this.collectionItemClass = props.collectionItemClass;
+    this.activeItem = null;
 
     this.setListeners();
   }
@@ -17,6 +18,9 @@ export default class Popup {
   hidePopup() {
     this.popup.container.classList.remove('active');
     document.body.classList.remove('lock-scroll');
+
+    this.activeItem && this.activeItem.classList.remove('active');
+    this.activeItem = null;
   }
 
   loadPopupInfo(petName) {
@@ -128,6 +132,8 @@ export default class Popup {
 
       e.preventDefault();
 
+      this.activeItem = collectionItem;
+      collectionItem.classList.add('active');
       this.showPopup(collectionItem.dataset.item);
     });
   }

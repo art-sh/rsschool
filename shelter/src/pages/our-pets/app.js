@@ -2,6 +2,7 @@ import './style.scss';
 import Menu from '../../assets/js/components/menu.js';
 import Popup from '../../assets/js/components/popup.js';
 import Pagination from '../../assets/js/components/pagination.js';
+import Redirects from '../../assets/js/redirects.js';
 
 new Menu(document.getElementById('menu-open'));
 new Popup({
@@ -19,7 +20,7 @@ new Pagination({
 const redirectToMain = (e) => {
   e.preventDefault();
 
-  window.location.pathname = `${window.location.pathname}../../pages/main/`;
+  Redirects.main();
 }
 
 document
@@ -31,5 +32,5 @@ document
   .addEventListener('click', redirectToMain);
 
 document
-  .querySelector('.section-header__header-content')
+  .querySelector('.section-header__header-content-text')
   .addEventListener('click', redirectToMain);

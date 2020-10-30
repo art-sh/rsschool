@@ -2,6 +2,7 @@ import './style.scss';
 import Menu from '../../assets/js/components/menu.js';
 import Slider from '../../assets/js/components/slider.js';
 import Popup from '../../assets/js/components/popup.js';
+import Redirects from '../../assets/js/redirects.js';
 
 new Menu(document.getElementById('menu-open'));
 new Slider({
@@ -15,7 +16,7 @@ new Popup({
 const redirectToPets = (e) => {
   e.preventDefault();
 
-  window.location.pathname = `${window.location.pathname}../../pages/our-pets/`;
+  Redirects.pets();
 }
 
 document
