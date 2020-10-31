@@ -176,7 +176,7 @@ class Momentum {
     this.monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'];
 
-    this.quoteUrl = 'https://cors-anywhere.herokuapp.com/https://api.forismatic.com/api/1.0/?method=getQuote&format=text&lang=en'
+    this.quoteUrl = 'https://favqs.com/api/qotd'
 
     this.container = container;
     this.backgroundElement = container.querySelector(`.${this.classList.background}`);
@@ -378,7 +378,9 @@ class Momentum {
     this.generateQuoteElement.classList.add('animate');
 
     this.fetch(this.quoteUrl, (response) => {
-      this.quoteTextElement.innerText = response;
+      let quoteResponse = JSON.parse(response);
+
+      this.quoteTextElement.innerText = `${quoteResponse.quote.body} (${quoteResponse.quote.author})`;
 
       setTimeout(() => {
         this.lockQuoteChange = false;
