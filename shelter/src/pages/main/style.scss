@@ -74,6 +74,7 @@
 
     &-image {
       display: flex;
+      align-items: center;
 
       @include media-md {
         margin-left: auto;
@@ -166,9 +167,11 @@
 
     &-image {
       display: flex;
+      align-items: center;
+      width: 300px;
 
       @include media-sm {
-        width: 87%;
+        width: 260px;
       }
 
       * {
@@ -399,13 +402,15 @@
 
     &-image {
       display: flex;
+      align-items: center;
+      width: 505px;
 
       @include media-sm {
-        width: 87%;
+        width: 260px;
+      }
 
-        * {
-          width: 100%;
-        }
+      * {
+        width: 100%;
       }
     }
   }

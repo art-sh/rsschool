@@ -43,20 +43,20 @@ export default class Menu {
       `<ul class="menu__container-block-navigation-collection">
         <li
           class="menu__container-block-navigation-collection-item ${this.getItemActiveClass('pages/main')}">
-          <a class="menu__container-block-navigation-collection-item-link" href="#"
+          <a class="menu__container-block-navigation-collection-item-link"
             onclick="Menu.handleMenuItemClick.call(Menu, 'pages/main', 'main')"
             >About the shelter</a>
         </li>
         <li class="menu__container-block-navigation-collection-item ${this.getItemActiveClass('pages/our-pets')}">
-          <a class="menu__container-block-navigation-collection-item-link" href="#"
+          <a class="menu__container-block-navigation-collection-item-link"
             onclick="Menu.handleMenuItemClick.call(Menu, 'pages/our-pets', 'pets')"
             >Our pets</a>
         </li>
-        <li class="menu__container-block-navigation-collection-item">
-          <a class="menu__container-block-navigation-collection-item-link click-ignore" href="#">Help the shelter</a>
+        <li class="menu__container-block-navigation-collection-item menu__container-block-navigation-collection-item--disabled">
+          <a class="menu__container-block-navigation-collection-item-link click-ignore">Help the shelter</a>
         </li>
-        <li class="menu__container-block-navigation-collection-item">
-          <a class="menu__container-block-navigation-collection-item-link click-ignore" href="#">Contacts</a>
+        <li class="menu__container-block-navigation-collection-item menu__container-block-navigation-collection-item--disabled">
+          <a class="menu__container-block-navigation-collection-item-link click-ignore">Contacts</a>
         </li>
       </ul>`;
 
