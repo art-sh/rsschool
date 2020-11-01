@@ -6,11 +6,13 @@
         "chars": {
           "ru": {
             "normal": "ё",
-            "uppercase": "Ё"
+            "uppercase": "Ё",
+            "shift": "Ё"
           },
           "en": {
             "normal": "`",
-            "uppercase": "~"
+            "uppercase": "`",
+            "shift": "~"
           }
         }
       },
@@ -19,11 +21,13 @@
         "chars": {
           "ru": {
             "normal": "1",
-            "uppercase": "!"
+            "uppercase": "1",
+            "shift": "!"
           },
           "en": {
             "normal": "1",
-            "uppercase": "!"
+            "uppercase": "1",
+            "shift": "!"
           }
         }
       },
@@ -32,11 +36,13 @@
         "chars": {
           "ru": {
             "normal": "2",
-            "uppercase": "@"
+            "uppercase": "2",
+            "shift": "\""
           },
           "en": {
             "normal": "2",
-            "uppercase": "\""
+            "uppercase": "2",
+            "shift": "@"
           }
         }
       },
@@ -45,11 +51,13 @@
         "chars": {
           "ru": {
             "normal": "3",
-            "uppercase": "№"
+            "uppercase": "3",
+            "shift": "№"
           },
           "en": {
             "normal": "3",
-            "uppercase": "#"
+            "uppercase": "3",
+            "shift": "#"
           }
         }
       },
@@ -58,11 +66,13 @@
         "chars": {
           "ru": {
             "normal": "4",
-            "uppercase": ";"
+            "uppercase": "4",
+            "shift": ";"
           },
           "en": {
             "normal": "4",
-            "uppercase": "$"
+            "uppercase": "4",
+            "shift": "$"
           }
         }
       },
@@ -71,11 +81,13 @@
         "chars": {
           "ru": {
             "normal": "5",
-            "uppercase": "%"
+            "uppercase": "5",
+            "shift": "%"
           },
           "en": {
             "normal": "5",
-            "uppercase": "%"
+            "uppercase": "5",
+            "shift": "%"
           }
         }
       },
@@ -84,11 +96,13 @@
         "chars": {
           "ru": {
             "normal": "6",
-            "uppercase": ":"
+            "uppercase": "6",
+            "shift": ":"
           },
           "en": {
             "normal": "6",
-            "uppercase": "^"
+            "uppercase": "6",
+            "shift": "^"
           }
         }
       },
@@ -97,11 +111,13 @@
         "chars": {
           "ru": {
             "normal": "7",
-            "uppercase": "?"
+            "uppercase": "7",
+            "shift": "?"
           },
           "en": {
             "normal": "7",
-            "uppercase": "&"
+            "uppercase": "7",
+            "shift": "&"
           }
         }
       },
@@ -110,11 +126,13 @@
         "chars": {
           "ru": {
             "normal": "8",
-            "uppercase": "*"
+            "uppercase": "8",
+            "shift": "*"
           },
           "en": {
             "normal": "8",
-            "uppercase": "*"
+            "uppercase": "8",
+            "shift": "*"
           }
         }
       },
@@ -123,11 +141,28 @@
         "chars": {
           "ru": {
             "normal": "9",
-            "uppercase": "("
+            "uppercase": "9",
+            "shift": "("
           },
           "en": {
             "normal": "9",
-            "uppercase": "("
+            "uppercase": "9",
+            "shift": "("
+          }
+        }
+      },
+      {
+        "keyCode": 48,
+        "chars": {
+          "ru": {
+            "normal": "0",
+            "uppercase": "0",
+            "shift": ")"
+          },
+          "en": {
+            "normal": "0",
+            "uppercase": "0",
+            "shift": ")"
           }
         }
       },
@@ -136,11 +171,13 @@
         "chars": {
           "ru": {
             "normal": "-",
-            "uppercase": "_"
+            "uppercase": "-",
+            "shift": "_"
           },
           "en": {
             "normal": "-",
-            "uppercase": "_"
+            "uppercase": "-",
+            "shift": "_"
           }
         }
       },
@@ -149,11 +186,13 @@
         "chars": {
           "ru": {
             "normal": "=",
-            "uppercase": "+"
+            "uppercase": "=",
+            "shift": "+"
           },
           "en": {
             "normal": "=",
-            "uppercase": "+"
+            "uppercase": "=",
+            "shift": "+"
           }
         }
       },
@@ -162,11 +201,13 @@
         "chars": {
           "ru": {
             "normal": "\\",
-            "uppercase": "/"
+            "uppercase": "\\",
+            "shift": "/"
           },
           "en": {
             "normal": "\\",
-            "uppercase": "|"
+            "uppercase": "\\",
+            "shift": "|"
           }
         }
       },
@@ -186,6 +227,20 @@
       }
     ],
     [
+      {
+        "special": "close",
+        "keyCode": "hide",
+        "chars": {
+          "ru": {
+            "normal": "↧",
+            "uppercase": "↧"
+          },
+          "en": {
+            "normal": "↧",
+            "uppercase": "↧"
+          }
+        }
+      },
       {
         "keyCode": 81,
         "chars": {
@@ -518,30 +573,16 @@
     ],
     [
       {
-        "special": "changeLanguage",
-        "keyCode": null,
-        "chars": {
-          "ru": {
-            "normal": "RU",
-            "uppercase": "RU"
-          },
-          "en": {
-            "normal": "EN",
-            "uppercase": "EN"
-          }
-        }
-      },
-      {
         "special": "shift",
         "keyCode": 16,
         "chars": {
           "ru": {
-            "normal": "Shift ↥",
-            "uppercase": "Shift ↥"
+            "normal": "Shift",
+            "uppercase": "Shift"
           },
           "en": {
-            "normal": "Shift ↥",
-            "uppercase": "Shift ↥"
+            "normal": "Shift",
+            "uppercase": "Shift"
           }
         }
       },
@@ -678,16 +719,30 @@
     ],
     [
       {
-        "special": "control",
-        "keyCode": 17,
+        "special": "toggleSound",
+        "keyCode": "toggleSound",
         "chars": {
           "ru": {
-            "normal": "Ctrl",
-            "uppercase": "Ctrl"
+            "normal": "🔇",
+            "uppercase": "🔇"
           },
           "en": {
-            "normal": "Ctrl",
-            "uppercase": "Ctrl"
+            "normal": "🔇",
+            "uppercase": "🔇"
+          }
+        }
+      },
+      {
+        "special": "changeLanguage",
+        "keyCode": "changeLanguage",
+        "chars": {
+          "ru": {
+            "normal": "RU",
+            "uppercase": "RU"
+          },
+          "en": {
+            "normal": "EN",
+            "uppercase": "EN"
           }
         }
       },
@@ -707,7 +762,7 @@
       },
       {
         "special": "space",
-        "keyCode": 13,
+        "keyCode": 32,
         "chars": {
           "ru": {
             "normal": "⊔",
@@ -744,6 +799,20 @@
           "en": {
             "normal": "⟹",
             "uppercase": "⟹"
+          }
+        }
+      },
+      {
+        "special": "toggleVoiceRecognition",
+        "keyCode": "toggleVoiceRecognition",
+        "chars": {
+          "ru": {
+            "normal": "🎤",
+            "uppercase": "🎤"
+          },
+          "en": {
+            "normal": "🎤",
+            "uppercase": "🎤"
           }
         }
       }

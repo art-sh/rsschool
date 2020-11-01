@@ -1,6 +1,12 @@
 @import '~normalize.css';
 @import 'assets/scss/variables.scss';
 
+@mixin media-sm {
+  @media screen and (max-width: 700px) {
+    @content;
+  }
+}
+
 :root {
   font-size: 10px;
   font-family: 'Piazzolla', serif;
@@ -63,6 +69,8 @@
   transform: translateY(100%);
   will-change: transform;
 
+  $keyboard: &;
+
   &.show {
     transform: none;
   }
@@ -81,12 +89,21 @@
       background-color: #ffffff59;
       border-radius: 5px;
       text-shadow: none;
-      transition: all $transition-default;
+      transition: all $transition-short;
       align-items: center;
       justify-content: center;
       font-size: 20px;
       line-height: 45px;
       cursor: pointer;
+      padding: 0 3px;
+
+      @include media-sm {
+        height: 35px;
+        line-height: 35px;
+        padding: 0 2px;
+        font-size: 16px;
+        margin: 3px 2px;
+      }
 
       &--wide {
         width: 12%;
@@ -96,13 +113,21 @@
         width: 36%;
       }
 
-      &:hover {
+      &:hover, &.highlight,
+      #{$keyboard}.uppercase &.key-20, #{$keyboard}.shifted &.key-16, #{$keyboard}.muted &.key-toggleSound,
+      #{$keyboard}.listening &.key-toggleVoiceRecognition {
         background-color: #ffffff1a;
       }
 
+      &:active, &.highlight {
+        box-shadow: 0 0 4px $color-white;
+      }
+
       &-text {
-        transition: all $transition-long;
+        transition: all $transition-default;
         will-change: transition;
+        text-overflow: ellipsis;
+        overflow: hidden;
 
         &--hide {
           transform: translateX(-10px);

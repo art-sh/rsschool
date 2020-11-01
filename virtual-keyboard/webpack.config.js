@@ -109,7 +109,8 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'assets/*.ico', to: '' },
+        {from: 'assets/*.ico', to: ''},
+        {from: 'assets/sounds', to: 'assets/sounds'},
       ],
     }),
   ]
