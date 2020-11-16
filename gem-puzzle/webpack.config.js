@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 const OptimizeAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const isProd = !isDev
@@ -79,6 +80,12 @@ module.exports = {
             presets: ['@babel/preset-env'],
           }
         }
+      },
+      {
+        test: /\.(svg|jpg)$/,
+        use: {
+          loader: 'file-loader'
+        }
       }
     ]
   },
@@ -95,6 +102,12 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: `style${isProd ? '.[contenthash]' : ''}.css`,
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {from: 'assets/sounds', to: 'assets/sounds'},
+        {from: 'assets/img/box', to: 'assets/img/box'},
+      ],
     }),
   ]
 }

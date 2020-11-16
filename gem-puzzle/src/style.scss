@@ -1,3 +1,15 @@
+$color-white: #fff;
+$color-black: #000;
+
+$transition-short: .15s;
+$transition-default: .25s;
+$transition-long: .5s;
+
+html {
+  font-family: 'Nunito', sans-serif;
+  font-size: 10px;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,21 +17,288 @@
 }
 
 .puzzle {
-  display: grid;
-  grid-template-columns: repeat(4, 100px);
-  grid-template-rows: repeat(4, 100px);
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  margin: auto;
+  position: relative;
+  font-size: 2rem;
+  user-select: none;
 
-  &__item {
-    border: 1px solid;
-    cursor: pointer;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 5rem;
+    padding: 0 3rem;
+
+    &-logo {
+      font-size: 3.5rem;
+      font-weight: bold;
+    }
+
+    &-settings {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 50px);
+      visibility: hidden;
+      opacity: 0;
+      background-color: #000000b8;
+      z-index: -1;
+      backdrop-filter: blur(5px);
+      color: $color-white;
+      transition: all $transition-default;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+
+      &-line {
+        display: flex;
+        margin: 10px 0;
+        padding: 0 10%;
+
+        &-text {
+          margin-right: 10px;
+        }
+
+        &-subtext {
+          margin-left: 10px;
+        }
+
+        &-dropdown {
+          padding: 0 15px;
+          background-color: transparent;
+          color: white;
+          border: none;
+          outline: none;
+          cursor: pointer;
+
+          option {
+            color: $color-white;
+            background-color: $color-black;
+          }
+        }
+
+        &-button {
+          cursor: pointer;
+          transition: all $transition-default;
+
+          &:hover {
+            opacity: .75;
+          }
+        }
+      }
+
+      &--show {
+        visibility: visible;
+        z-index: 5;
+        opacity: 1;
+      }
+
+      &-toggle {
+        height: 30px;
+        width: 30px;
+        background-image: url('./assets/img/icon/menu.svg');
+        background-position: center;
+        background-size: contain;
+        cursor: pointer;
+        transition: all $transition-default;
+
+        &:hover {
+          opacity: .5;
+        }
+      }
+    }
+  }
+
+  &__game {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.5s;
+    flex-direction: column;
 
-    &.inactive {
-      cursor: initial;
+    &-grid {
+      display: grid;
+      gap: 3px;
+      justify-content: center;
+      transition: opacity .5s;
+      width: 95%;
+      max-width: 700px;
+
+      $gridCell: 1fr;
+
+      &.container-9 {
+        grid-template-columns: repeat(3, $gridCell);
+        grid-template-rows: repeat(3, $gridCell);
+      }
+
+      &.container-16 {
+        grid-template-columns: repeat(4, $gridCell);
+        grid-template-rows: repeat(4, $gridCell);
+      }
+
+      &.container-25 {
+        grid-template-columns: repeat(5, $gridCell);
+        grid-template-rows: repeat(5, $gridCell);
+      }
+
+      &.container-36 {
+        grid-template-columns: repeat(6, $gridCell);
+        grid-template-rows: repeat(6, $gridCell);
+      }
+
+      &.container-49 {
+        grid-template-columns: repeat(7, $gridCell);
+        grid-template-rows: repeat(7, $gridCell);
+      }
+
+      &.container-64 {
+        grid-template-columns: repeat(8, $gridCell);
+        grid-template-rows: repeat(8, $gridCell);
+      }
+
+      &-item {
+        position: relative;
+
+        &:before {
+          content: "";
+          display: block;
+          height: 0;
+          width: 100%;
+          padding-bottom: 100%;
+          z-index: -1;
+        }
+
+        &-button {
+          position: absolute;
+          top: 0;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: transform .25s, background .25s;
+          background-color: grey;
+          border-radius: 5px;
+          box-shadow: 0 0 5px -1px $color-black;
+          z-index: 1;
+
+          &--active {
+            cursor: pointer;
+            background-color: green;
+            color: white;
+          }
+
+          &--inactive {
+            background-color: transparent;
+            box-shadow: unset;
+          }
+
+          &--draggable {
+            pointer-events: none;
+            z-index: 2;
+          }
+        }
+      }
     }
+
+    &-stats {
+      line-height: 5rem;
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+      margin-top: 2rem;
+    }
+  }
+
+  &__popup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 90%;
+    height: calc(100% - 60px);
+    margin: auto;
+    transform: translateY(-150%);
+    transition: transform $transition-long;
+    background-color: $color-white;
+    border-radius: 10px;
+    box-shadow: 0 0 3px $color-black;
+    will-change: transform;
+
+    &--show {
+      transform: translateY(55px);
+    }
+
+    &-list {
+      margin: 25px 0;
+      width: 100%;
+      text-align: center;
+      overflow-y: auto;
+
+      &-item {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        line-height: 4rem;
+        align-items: center;
+        margin: 1.5rem 0;
+
+        & > * {
+          margin: 0 .5rem;
+        }
+
+        &-actions {
+          display: flex;
+
+          & > * {
+            margin: 0 1rem;
+            height: 25px;
+            width: 25px;
+            background-position: center;
+            background-size: contain;
+            cursor: pointer;
+            transition: all $transition-default;
+
+            &:hover {
+              opacity: .5;
+            }
+          }
+        }
+
+        &-load {
+          background-image: url('./assets/img/icon/load.svg');
+        }
+
+        &-remove {
+          background-image: url('./assets/img/icon/remove.svg');
+        }
+      }
+    }
+
+    &-button {
+      cursor: pointer;
+      transition: $transition-default;
+
+      &:hover {
+        opacity: .75;
+      }
+    }
+  }
+
+  &__records {
+    z-index: 10;
+  }
+
+  &__saves {
+    z-index: 11;
   }
 }
