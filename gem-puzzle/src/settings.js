@@ -44,6 +44,7 @@ export default class Settings {
             el: null,
             text: 'Start new game',
             click: function () {
+              this.$app.game.id = Math.random();
               this.$app.game.startNewGame();
               this.toggle();
             }.bind(this)
@@ -97,9 +98,13 @@ export default class Settings {
             class: 'puzzle__header-settings-line-checkbox',
             el: null,
             template: `
-              <input type="checkbox">`,
+              <input type="checkbox" id="settings-sound" hidden>
+              <label for="settings-sound"></label>`,
             click: function (e) {
-              this.config.isSoundAllowed = e.target.checked;
+              let checkbox = e.target.parentNode.children[0];
+              checkbox.checked = !checkbox.checked;
+
+              this.config.isSoundAllowed = checkbox.checked;
             }.bind(this)
           },
         },
@@ -116,9 +121,14 @@ export default class Settings {
           checkbox: {
             class: 'puzzle__header-settings-line-checkbox',
             el: null,
-            template: `<input type="checkbox">`,
+            template: `
+              <input type="checkbox" id="settings-images" hidden>
+              <label for="settings-images"></label>`,
             click: function (e) {
-              this.config.imagesInsteadNumbers = e.target.checked;
+              let checkbox = e.target.parentNode.children[0];
+              checkbox.checked = !checkbox.checked;
+
+              this.config.imagesInsteadNumbers = checkbox.checked;
             }.bind(this)
           }
         },

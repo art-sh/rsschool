@@ -1,13 +1,82 @@
 $color-white: #fff;
 $color-black: #000;
+$color-blue: #329be8;
+$color-blue-1: #16dacc;
 
 $transition-short: .15s;
 $transition-default: .25s;
 $transition-long: .5s;
 
+@mixin media-md {
+  @media screen and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin media-sm {
+  @media screen and (max-width: 500px) {
+    @content;
+  }
+}
+
+@mixin settings-checkbox {
+  label {
+    display: inline-block;
+    height: 20px;
+    width: 50px;
+    position: relative;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 0 2px black inset;
+
+    &:before {
+      content: "";
+      display: block;
+      height: 100%;
+      width: 0%;
+      background-color: #329be8;
+      position: absolute;
+      left: 0;
+      transition: all 0.25s;
+      border-radius: 5px;
+      box-shadow: 0 0 2px black inset;
+    }
+
+    &:after {
+      content: "";
+      display: block;
+      height: 30px;
+      width: 30px;
+      background-color: #329be8;
+      position: absolute;
+      top: -5px;
+      right: calc(100% - 15px);
+      transition: all 0.25s;
+      border-radius: 5px;
+      box-shadow: 0 0 3px black inset;
+    }
+  }
+
+  input:checked + label {
+    &:before {
+      width: 100%;
+    }
+
+    &:after {
+      right: -15px;
+      background-color: #27d816;
+    }
+  }
+
+}
+
 html {
   font-family: 'Nunito', sans-serif;
   font-size: 10px;
+  overflow: hidden;
+  background-color: #329be8;
+  color: $color-white;
 }
 
 * {
@@ -23,15 +92,20 @@ html {
   height: 100vh;
   margin: auto;
   position: relative;
-  font-size: 2rem;
+  font-size: 4rem;
   user-select: none;
+
+  @include media-sm {
+    font-size: 2rem;
+  }
 
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    line-height: 5rem;
+    line-height: 6rem;
     padding: 0 3rem;
+    background-color: $color-black;
 
     &-logo {
       font-size: 3.5rem;
@@ -54,11 +128,17 @@ html {
       display: flex;
       justify-content: center;
       flex-direction: column;
+      align-items: center;
 
       &-line {
         display: flex;
         margin: 10px 0;
-        padding: 0 10%;
+        width: 90%;
+        max-width: 700px;
+
+        @include media-sm {
+          line-height: 2.5rem;
+        }
 
         &-text {
           margin-right: 10px;
@@ -66,6 +146,19 @@ html {
 
         &-subtext {
           margin-left: 10px;
+          font-size: 2rem;
+
+          @include media-sm {
+            font-size: 1.5rem;
+          }
+        }
+
+        &-checkbox {
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+
+          @include settings-checkbox;
         }
 
         &-dropdown {
@@ -75,6 +168,11 @@ html {
           border: none;
           outline: none;
           cursor: pointer;
+          font-size: 4rem;
+
+          @include media-sm {
+            font-size: 2rem;
+          }
 
           option {
             color: $color-white;
@@ -106,6 +204,7 @@ html {
         background-size: contain;
         cursor: pointer;
         transition: all $transition-default;
+        filter: invert(1);
 
         &:hover {
           opacity: .5;
@@ -120,6 +219,8 @@ html {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    $container-game: &;
 
     &-grid {
       display: grid;
@@ -182,20 +283,24 @@ html {
           align-items: center;
           justify-content: center;
           transition: transform .25s, background .25s;
-          background-color: grey;
+          background-color: #778899;
           border-radius: 5px;
           box-shadow: 0 0 5px -1px $color-black;
           z-index: 1;
 
           &--active {
             cursor: pointer;
-            background-color: green;
+            background-color: $color-blue-1;
             color: white;
           }
 
           &--inactive {
             background-color: transparent;
             box-shadow: unset;
+
+            #{$container-game}--draggable & {
+              border: 1px dashed white;
+            }
           }
 
           &--draggable {
@@ -211,7 +316,7 @@ html {
       display: flex;
       justify-content: space-evenly;
       width: 100%;
-      margin-top: 2rem;
+      margin-bottom: 2rem;
     }
   }
 
@@ -225,7 +330,7 @@ html {
     left: 0;
     right: 0;
     width: 90%;
-    height: calc(100% - 60px);
+    height: calc(100% - 80px);
     margin: auto;
     transform: translateY(-150%);
     transition: transform $transition-long;
@@ -233,9 +338,12 @@ html {
     border-radius: 10px;
     box-shadow: 0 0 3px $color-black;
     will-change: transform;
+    color: $color-black;
+    font-size: 2rem;
+    max-width: 700px;
 
     &--show {
-      transform: translateY(55px);
+      transform: translateY(70px);
     }
 
     &-list {

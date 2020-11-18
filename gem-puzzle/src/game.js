@@ -27,6 +27,9 @@ export default class Game {
       container: {
         class: 'puzzle__game',
         el: null,
+        modifiers: {
+          draggable: 'puzzle__game--draggable',
+        }
       },
       grid: {
         container: {
@@ -161,8 +164,8 @@ export default class Game {
     this.elements.container.el = document.createElement('div');
     this.elements.container.el.className = this.elements.container.class;
 
-    this.buildGridContainer();
     this.buildControlsContainer();
+    this.buildGridContainer();
 
     this.$app.appendToMainContainer(this.elements.container.el);
   }
@@ -219,7 +222,7 @@ export default class Game {
 
   setGridListeners() {
     this.elements.grid.container.el.addEventListener('mousedown', (event) => {
-      if (this.isGameEnded)
+      if (this.isGameEnded || this.isMoving)
         return;
 
       let eventNode = event.target;
@@ -247,6 +250,17 @@ export default class Game {
         },
         self = this;
 
+      drag.element.ontransitionend = (e) => {
+        e.target.classList.remove(this.elements.grid.button.modifiers.draggable);
+
+        setTimeout(() => {
+          this.isMoving = false;
+        });
+
+        this.handleSuccessEnd();
+        e.target.ontransitionend = null;
+      }
+
       const mouseMove = () => {
         let timer = null;
 
@@ -265,6 +279,7 @@ export default class Game {
             if (Math.abs(drag.mouse.x - event.x) < 25 && Math.abs(drag.mouse.y - event.y) < 25)
               return;
 
+            self.elements.container.el.classList.add(self.elements.container.modifiers.draggable);
             self.isMoving = true;
 
             let offset = {
@@ -282,26 +297,31 @@ export default class Game {
       const mouseMoveBind = mouseMove();
 
       const mouseUp = (e) => {
+        setTimeout(() => {
+          this.elements.container.el.classList.remove(this.elements.container.modifiers.draggable);
+
+          setTimeout(() => {
+            if (e.target.classList.contains(this.elements.grid.button.modifiers.inactive)) {
+              let inactiveConfig = this.getElementConfigByNode(e.target),
+                draggableConfig = this.getElementConfigByNode(drag.element);
+
+              let inactiveCoords = this.getElementCoordinatesByID(inactiveConfig.id),
+                draggableCoords = this.getElementCoordinatesByID(draggableConfig.id);
+
+              this.moveElementTo(draggableCoords, inactiveCoords);
+            }
+
+            if (!this.isMoving)
+              this.moveElementTo(this.getElementCoordinatesByID(targetConfig.id), this.getElementCoordinatesAvailable(targetConfig.id));
+
+            setTimeout(() => {
+              drag.element.removeAttribute('style');
+            });
+          })
+        });
+
         document.removeEventListener('mousemove', mouseMoveBind);
         document.removeEventListener('mouseup', mouseUp);
-
-        if (e.target.classList.contains(this.elements.grid.button.modifiers.inactive)) {
-          let inactiveConfig = this.getElementConfigByNode(e.target),
-            draggableConfig = this.getElementConfigByNode(drag.element);
-
-          let inactiveCoords = this.getElementCoordinatesByID(inactiveConfig.id),
-            draggableCoords = this.getElementCoordinatesByID(draggableConfig.id);
-
-          this.moveElementTo(draggableCoords, inactiveCoords);
-        }
-
-        if (!this.isMoving) {
-          this.moveElementTo(this.getElementCoordinatesByID(targetConfig.id), this.getElementCoordinatesAvailable(targetConfig.id));
-        }
-
-        setTimeout(() => {
-          drag.element.removeAttribute('style');
-        });
       };
 
       document.addEventListener('mousemove', mouseMoveBind);
@@ -414,30 +434,18 @@ export default class Game {
     parentSecond.append(first);
 
     first.style.transition = 'unset';
-    first.style.transform = `translate(${coordsFirst.x - coordsSecond.x}px, ${coordsFirst.y - coordsSecond.y}px)`;
+    if (!first.classList.contains(this.elements.grid.button.modifiers.inactive))
+      first.style.transform = `translate(${coordsFirst.x - coordsSecond.x}px, ${coordsFirst.y - coordsSecond.y}px)`;
 
     second.style.transition = 'unset';
-    second.style.transform = `translate(${coordsSecond.x - coordsFirst.x}px, ${coordsSecond.y - coordsFirst.y}px)`;
+    if (!second.classList.contains(this.elements.grid.button.modifiers.inactive))
+      second.style.transform = `translate(${coordsSecond.x - coordsFirst.x}px, ${coordsSecond.y - coordsFirst.y}px)`;
 
     setTimeout(() => {
       this.playSound();
 
       first.removeAttribute('style');
       second.removeAttribute('style');
-
-      first.ontransitionend = (e) => {
-        e.target.classList.remove(this.elements.grid.button.modifiers.draggable);
-      }
-
-      second.ontransitionend = (e) => {
-        e.target.classList.remove(this.elements.grid.button.modifiers.draggable);
-
-        setTimeout(() => {
-          this.isMoving = false;
-        });
-
-        this.handleSuccessEnd();
-      };
     });
   }
 
@@ -450,7 +458,7 @@ export default class Game {
   }
 
   handleSuccessEnd() {
-    if (this.isGameComplete()) {
+    if (!this.isGameEnded && this.isGameComplete()) {
       this.isActive = false;
       this.isGameEnded = true;
 
@@ -458,7 +466,7 @@ export default class Game {
 
       setTimeout(() => {
         alert(`Ура! Вы решили головоломку за ${this.getTimeString()} и ${this.stats.steps} ходов`);
-      })
+      });
     }
   }
 
@@ -496,8 +504,9 @@ export default class Game {
 
       setTimeout(() => {
         this.elements.grid.container.el.removeAttribute('style');
-      })
+      });
 
+      this.isMoving = false;
       this.isActive = false;
       this.isGameEnded = this.isGameComplete();
       this.loadedData = null;

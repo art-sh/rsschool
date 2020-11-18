@@ -71,8 +71,8 @@ export default class Records {
     if (bestGames && bestGames.length) {
       this.elements.list.container.el.innerHTML = '';
 
-      bestGames.forEach((game) => {
-        this.elements.list.container.el.append(this.getBestGameElement(game));
+      bestGames.forEach((game, index) => {
+        this.elements.list.container.el.append(this.getBestGameElement(game, index));
       });
     } else {
       this.elements.list.container.el.innerText = 'Finish one game';
@@ -87,7 +87,7 @@ export default class Records {
     this.elements.container.el.classList.remove(this.elements.container.modifiers.show);
   }
 
-  getBestGameElement(data) {
+  getBestGameElement(data, index) {
     let config = this.elements.list.item;
 
     let parentNode = document.createElement('div');
@@ -95,6 +95,7 @@ export default class Records {
 
     let rank = document.createElement('div');
     rank.className = config.rank.class;
+    rank.innerText = index + 1;
 
     let date = document.createElement('div');
     date.className = config.date.class;

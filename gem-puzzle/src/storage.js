@@ -59,7 +59,6 @@ export default class Storage {
 
     this.$app.config.columns = loadedInfo.config.columns;
     this.$app.config.rows = loadedInfo.config.rows;
-    this.$app.config.imagesInsteadNumbers = loadedInfo.config.imagesInsteadNumbers;
 
     this.$app.game.startNewGame();
   }
