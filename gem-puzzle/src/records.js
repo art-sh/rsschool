@@ -1,4 +1,4 @@
-import Mixin from './js/mixins/main.js';
+import Mixin from './js/mixins/main';
 
 export default class Records {
   constructor(app) {
@@ -10,7 +10,7 @@ export default class Records {
         el: null,
         modifiers: {
           show: 'puzzle__popup--show',
-        }
+        },
       },
       header: {
         class: 'puzzle__popup-header',
@@ -40,7 +40,7 @@ export default class Records {
           time: {
             class: 'puzzle__popup-list-item-time',
             text: 'time: ',
-          }
+          },
         },
       },
       close: {
@@ -49,9 +49,9 @@ export default class Records {
         text: 'Close',
         click: function () {
           this.toggle();
-        }.bind(this)
-      }
-    }
+        }.bind(this),
+      },
+    };
 
     this.isShow = false;
   }
@@ -62,11 +62,11 @@ export default class Records {
 
   toggle() {
     this.isShow = !this.isShow;
-    (this.isShow) ? this.show() : this.hide();
+    return (this.isShow) ? this.show() : this.hide();
   }
 
   show() {
-    let bestGames = this.$app.storage.getBestGames();
+    const bestGames = this.$app.storage.getBestGames();
 
     if (bestGames && bestGames.length) {
       this.elements.list.container.el.innerHTML = '';
@@ -88,24 +88,24 @@ export default class Records {
   }
 
   getBestGameElement(data, index) {
-    let config = this.elements.list.item;
+    const config = this.elements.list.item;
 
-    let parentNode = document.createElement('div');
+    const parentNode = document.createElement('div');
     parentNode.className = config.container.class;
 
-    let rank = document.createElement('div');
+    const rank = document.createElement('div');
     rank.className = config.rank.class;
     rank.innerText = index + 1;
 
-    let date = document.createElement('div');
+    const date = document.createElement('div');
     date.className = config.date.class;
     date.innerText = Mixin.getFullDateFromTimestamp(data.date);
 
-    let steps = document.createElement('div');
+    const steps = document.createElement('div');
     steps.className = config.steps.class;
     steps.innerText = `${config.steps.text}${data.steps}`;
 
-    let time = document.createElement('div');
+    const time = document.createElement('div');
     time.className = config.time.class;
     time.innerText = `${config.time.text}${data.time}`;
 

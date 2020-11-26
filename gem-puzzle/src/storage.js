@@ -1,6 +1,10 @@
+import Mixin from './js/mixins/main';
+
 export default class Storage {
   constructor(app) {
     this.$app = app;
+
+    this.storage = localStorage;
 
     this.keys = {
       config: '__settings',
@@ -9,24 +13,16 @@ export default class Storage {
     };
   }
 
-  toJson(data) {
-    return JSON.stringify(data);
-  }
-
-  fromJson(data) {
-    return JSON.parse(data);
-  }
-
   getItem(key) {
     try {
-      return this.fromJson(localStorage.getItem(key));
+      return Mixin.fromJson(this.storage.getItem(key));
     } catch (e) {
       return null;
     }
   }
 
   setItem(key, value) {
-    localStorage.setItem(key, this.toJson(value));
+    this.storage.setItem(key, Mixin.toJson(value));
   }
 
   saveCurrentSettings() {
@@ -64,43 +60,40 @@ export default class Storage {
   }
 
   removeSavedGame(gameID = null) {
-    if (!gameID)
-      return;
+    if (!gameID) return;
 
-    let savedGames = this.getSavedGames();
+    const savedGames = this.getSavedGames();
 
     savedGames.forEach((save, index) => {
-      if (save.game.id === gameID)
-        savedGames.splice(index, 1);
+      if (save.game.id === gameID) savedGames.splice(index, 1);
     });
 
     this.setItem(this.keys.save, savedGames);
   }
 
   saveCurrentGame() {
-    let savedGames = this.getItem(this.keys.save) || [],
-      saveData = {
-        date: Date.now(),
-        game: {
-          id: this.$app.game.id,
-          grid: this.$app.game.grid,
-          stats: this.$app.game.stats,
-          imageNumber: this.$app.game.imageNumber,
-        },
-        config: {
-          columns: (this.$app.game.grid.length) ? this.$app.game.grid[0].length : 0,
-          rows: this.$app.game.grid.length,
-          imagesInsteadNumbers: this.$app.config.imagesInsteadNumbers,
-        },
-      };
+    const savedGames = this.getItem(this.keys.save) || [];
+    const saveData = {
+      date: Date.now(),
+      game: {
+        id: this.$app.game.id,
+        grid: this.$app.game.grid,
+        stats: this.$app.game.stats,
+        imageNumber: this.$app.game.imageNumber,
+      },
+      config: {
+        columns: (this.$app.game.grid.length) ? this.$app.game.grid[0].length : 0,
+        rows: this.$app.game.grid.length,
+        imagesInsteadNumbers: this.$app.config.imagesInsteadNumbers,
+      },
+    };
 
-    let saveInLocal = savedGames.find((save) => save.game.id === saveData.game.id) || false;
+    const saveInLocal = savedGames.find((save) => save.game.id === saveData.game.id) || false;
 
     if (saveInLocal) {
       Object.assign(saveInLocal, saveData);
     } else {
-      if (savedGames.length > 7)
-        savedGames.shift();
+      if (savedGames.length > 7) savedGames.shift();
 
       savedGames.push(saveData);
     }
@@ -116,25 +109,22 @@ export default class Storage {
   }
 
   saveBestGames() {
-    let bestGames = this.getBestGames(),
-      currentGame = {
-        date: Date.now(),
-        time: this.$app.game.getTimeString(),
-        steps: this.$app.game.stats.steps,
-      };
+    let bestGames = this.getBestGames();
+    const currentGame = {
+      date: Date.now(),
+      time: this.$app.game.getTimeString(),
+      steps: this.$app.game.stats.steps,
+    };
 
-    if (!bestGames)
-      bestGames = [];
+    if (!bestGames) bestGames = [];
 
     let position = bestGames.findIndex((item) => item.steps > currentGame.steps);
 
-    if (position === -1)
-      position = bestGames.length;
+    if (position === -1) position = bestGames.length;
 
     bestGames.splice(position, 0, currentGame);
 
-    if (bestGames.length > 10)
-      bestGames.length = 10;
+    if (bestGames.length > 10) bestGames.length = 10;
 
     this.setItem(this.keys.best, bestGames);
   }

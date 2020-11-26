@@ -1,4 +1,4 @@
-import Mixin from './js/mixins/main.js';
+import Mixin from './js/mixins/main';
 
 export default class Saves {
   constructor(app) {
@@ -19,7 +19,7 @@ export default class Saves {
         click: function () {
           this.$app.storage.saveCurrentGame();
           this.show();
-        }.bind(this)
+        }.bind(this),
       },
       list: {
         container: {
@@ -40,7 +40,7 @@ export default class Saves {
           },
           actions: {
             container: {
-              class: 'puzzle__popup-list-item-actions'
+              class: 'puzzle__popup-list-item-actions',
             },
             load: {
               class: 'puzzle__popup-list-item-load',
@@ -48,16 +48,16 @@ export default class Saves {
             remove: {
               class: 'puzzle__popup-list-item-remove',
             },
-          }
+          },
         },
       },
       close: {
         class: 'puzzle__popup-button',
         el: null,
         text: 'Close',
-        click: this.toggle.bind(this)
-      }
-    }
+        click: this.toggle.bind(this),
+      },
+    };
 
     this.isShow = false;
   }
@@ -68,11 +68,11 @@ export default class Saves {
 
   toggle() {
     this.isShow = !this.isShow;
-    (this.isShow) ? this.show() : this.hide();
+    return (this.isShow) ? this.show() : this.hide();
   }
 
   show() {
-    let savedGames = this.$app.storage.getSavedGames();
+    const savedGames = this.$app.storage.getSavedGames();
 
     if (savedGames && savedGames.length) {
       this.elements.list.container.el.innerHTML = '';
@@ -94,31 +94,31 @@ export default class Saves {
   }
 
   createSaveElement(save) {
-    let config = this.elements.list.item;
+    const config = this.elements.list.item;
 
-    let parentNode = document.createElement('div');
+    const parentNode = document.createElement('div');
     parentNode.className = config.container.class;
 
-    let date = document.createElement('div');
+    const date = document.createElement('div');
     date.className = config.date.class;
     date.innerText = Mixin.getFullDateFromTimestamp(save.date)
       + ((save.game.id === this.$app.game.id) ? ' (current)' : '');
 
-    let field = document.createElement('div');
+    const field = document.createElement('div');
     field.className = config.field.class;
     field.innerText = `${config.field.text} ${save.config.columns}x${save.config.rows}`;
 
-    let actions = document.createElement('div');
+    const actions = document.createElement('div');
     actions.className = config.actions.container.class;
 
-    let load = document.createElement('div');
+    const load = document.createElement('div');
     load.className = config.actions.load.class;
     load.onclick = function () {
       this.$app.storage.loadSavedGame(save.game.id);
       this.toggle();
     }.bind(this);
 
-    let remove = document.createElement('div');
+    const remove = document.createElement('div');
     remove.className = config.actions.remove.class;
     remove.onclick = function () {
       this.$app.storage.removeSavedGame(save.game.id);

@@ -1,10 +1,10 @@
 import './index.html';
 import './style.scss';
-import Game from './game.js';
-import Settings from './settings.js';
-import Storage from './storage.js';
-import Records from './records.js';
-import Saves from './saves.js';
+import Game from './game';
+import Settings from './settings';
+import Storage from './storage';
+import Records from './records';
+import Saves from './saves';
 
 class Puzzle {
   constructor() {
@@ -25,7 +25,9 @@ class Puzzle {
       settings: this.settings.elements,
       records: this.records.elements,
     };
+  }
 
+  init() {
     window.addEventListener('beforeunload', this.storage.saveCurrentGame.bind(this.storage));
 
     this.buildContainer();
@@ -34,8 +36,6 @@ class Puzzle {
 
     this.records.load();
     this.saves.load();
-
-    alert('По возможности проверьте в последний день дедлайна :)');
   }
 
   buildContainer() {
@@ -50,4 +50,6 @@ class Puzzle {
   }
 }
 
-new Puzzle();
+const app = new Puzzle();
+
+app.init();

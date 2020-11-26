@@ -1,4 +1,4 @@
-import Mixin from './js/mixins/main.js';
+import Mixin from './js/mixins/main';
 
 export default class Game {
   constructor(app) {
@@ -29,7 +29,7 @@ export default class Game {
         el: null,
         modifiers: {
           draggable: 'puzzle__game--draggable',
-        }
+        },
       },
       grid: {
         container: {
@@ -45,7 +45,7 @@ export default class Game {
           },
         },
         item: {
-          class: 'puzzle__game-grid-item'
+          class: 'puzzle__game-grid-item',
         },
         button: {
           class: 'puzzle__game-grid-item-button',
@@ -53,7 +53,7 @@ export default class Game {
             active: 'puzzle__game-grid-item-button--active',
             inactive: 'puzzle__game-grid-item-button--inactive',
             draggable: 'puzzle__game-grid-item-button--draggable',
-          }
+          },
         },
       },
       stats: {
@@ -79,7 +79,7 @@ export default class Game {
       snap: {
         src: 'assets/sounds/snap.mp3',
         buffer: null,
-      }
+      },
     };
 
     this.imageNumber = null;
@@ -99,26 +99,27 @@ export default class Game {
       this.grid.length = 0;
 
       grid.forEach((line) => {
-        this.grid.push(line)
+        this.grid.push(line);
 
         gridCount += line.length;
       });
 
-      this.gridInitial = this.getGridInitialByLength(gridCount);
+      this.gridInitial = Mixin.getGridInitialByLength(gridCount);
 
       return;
     }
 
-    let gridInitial = this.getGridInitialByLength(this.$app.config.columns * this.$app.config.rows);
+    const gridInitial = Mixin.getGridInitialByLength(this.$app.config.columns
+      * this.$app.config.rows);
 
     this.grid.length = 0;
     this.gridInitial = Array.from(gridInitial);
 
-    for (let row = 0; row < this.$app.config.rows; row++) {
-      let rowData = [];
+    for (let row = 0; row < this.$app.config.rows; row += 1) {
+      const rowData = [];
 
-      for (let column = 0; column < this.$app.config.columns; column++) {
-        let valuesKey = Math.floor((Math.random()) * gridInitial.length);
+      for (let column = 0; column < this.$app.config.columns; column += 1) {
+        const valuesKey = Math.floor((Math.random()) * gridInitial.length);
 
         rowData.push(gridInitial[valuesKey]);
         gridInitial.splice(valuesKey, 1);
@@ -127,8 +128,7 @@ export default class Game {
       this.grid.push(rowData);
     }
 
-    if (!this.isGridSolvable(this.getGridAsArray()))
-      this.getRandomGrid();
+    if (!Mixin.isGridSolvable(this.getGridAsArray())) this.getRandomGrid();
   }
 
   getGridAsArray() {
@@ -137,27 +137,6 @@ export default class Game {
 
       return out;
     }, []);
-  }
-
-  getGridInitialByLength(length) {
-    let out = [...new Array(length).keys()];
-
-    out.shift();
-    out.push(0);
-
-    return out;
-  }
-
-  isGridSolvable(grid) {
-    let kDisorder = 0;
-
-    for (let i = 1, len = grid.length - 1; i < len; i++) {
-      for (let j = i - 1; j >= 0; j--) {
-        if (grid[j] > grid[i]) kDisorder++;
-      }
-    }
-
-    return !(kDisorder % 2);
   }
 
   buildGameContainer() {
@@ -187,7 +166,7 @@ export default class Game {
 
     this.getRandomGrid(grid);
     this.getGridAsArray().forEach((id) => {
-      let itemConfig = this.generateGridItem(id);
+      const itemConfig = this.generateGridItem(id);
 
       this.gridElements.push(itemConfig);
       this.elements.grid.container.el.append(itemConfig.element.parentNode);
@@ -196,21 +175,19 @@ export default class Game {
   }
 
   generateGridItem(id) {
-    let config = JSON.parse(JSON.stringify(this.gridElementExample));
+    const config = JSON.parse(JSON.stringify(this.gridElementExample));
 
-    let gridItem = document.createElement('div');
+    const gridItem = document.createElement('div');
     gridItem.className = this.elements.grid.item.class;
 
     let gridButton = document.createElement('div');
     gridButton.innerText = (id) ? id.toString() : '';
 
-    if (this.$app.config.imagesInsteadNumbers && id)
-      gridButton = this.imageParts[id];
+    if (this.$app.config.imagesInsteadNumbers && id) gridButton = this.imageParts[id];
 
     gridButton.className = this.elements.grid.button.class;
 
-    if (!id)
-      gridButton.classList.add(this.elements.grid.button.modifiers.inactive);
+    if (!id) gridButton.classList.add(this.elements.grid.button.modifiers.inactive);
 
     gridItem.append(gridButton);
 
@@ -222,33 +199,31 @@ export default class Game {
 
   setGridListeners() {
     this.elements.grid.container.el.addEventListener('mousedown', (event) => {
-      if (this.isGameEnded || this.isMoving)
-        return;
+      if (this.isGameEnded || this.isMoving) return;
 
       let eventNode = event.target;
 
-      if (eventNode.classList.contains(this.elements.grid.item.class))
-        eventNode = eventNode.querySelector(`.${this.elements.grid.button.class}`);
+      if (eventNode.classList.contains(this.elements.grid.item.class)) eventNode = eventNode.querySelector(`.${this.elements.grid.button.class}`);
 
-      let targetConfig = this.getElementConfigByNode(eventNode);
+      const targetConfig = this.getElementConfigByNode(eventNode);
 
-      if (!targetConfig || !eventNode.classList.contains(this.elements.grid.button.modifiers.active))
-        return;
+      if (!eventNode.classList.contains(this.elements.grid.button.modifiers.active)
+        || !targetConfig) return;
 
       if (!this.isActive) {
         this.isActive = true;
         this.startListenGameTime();
       }
 
-      let drag = {
-          element: eventNode,
-          coords: this.getElementCoordinatesAbsolute(eventNode),
-          mouse: {
-            x: event.x,
-            y: event.y,
-          }
+      const drag = {
+        element: eventNode,
+        coords: Mixin.getElementCoordinatesAbsolute(eventNode),
+        mouse: {
+          x: event.x,
+          y: event.y,
         },
-        self = this;
+      };
+      const self = this;
 
       drag.element.ontransitionend = (e) => {
         e.target.classList.remove(this.elements.grid.button.modifiers.draggable);
@@ -259,7 +234,7 @@ export default class Game {
 
         this.handleSuccessEnd();
         e.target.ontransitionend = null;
-      }
+      };
 
       const mouseMove = () => {
         let timer = null;
@@ -271,27 +246,28 @@ export default class Game {
           }
 
           timer = setTimeout(() => {
+            const handler = (eMove) => {
+              if (Math.abs(drag.mouse.x - eMove.x) < 25 && Math.abs(drag.mouse.y - eMove.y) < 25) {
+                return;
+              }
+
+              self.elements.container.el.classList.add(self.elements.container.modifiers.draggable);
+              self.isMoving = true;
+
+              const offset = {
+                x: eMove.x - drag.coords.left - ((drag.coords.right - drag.coords.left) / 2),
+                y: eMove.y - drag.coords.top - ((drag.coords.bottom - drag.coords.top) / 2),
+              };
+
+              drag.element.style.transition = 'unset';
+              drag.element.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
+              drag.element.classList.add(this.elements.grid.button.modifiers.draggable);
+            };
+
             handler.call(self, e);
             timer = null;
           });
-
-          const handler = (event) => {
-            if (Math.abs(drag.mouse.x - event.x) < 25 && Math.abs(drag.mouse.y - event.y) < 25)
-              return;
-
-            self.elements.container.el.classList.add(self.elements.container.modifiers.draggable);
-            self.isMoving = true;
-
-            let offset = {
-              x: event.x - drag.coords.left - ((drag.coords.right - drag.coords.left) / 2),
-              y: event.y - drag.coords.top - ((drag.coords.bottom - drag.coords.top) / 2),
-            };
-
-            drag.element.style.transition = 'unset';
-            drag.element.style.transform = `translate(${offset.x}px, ${offset.y}px)`;
-            drag.element.classList.add(this.elements.grid.button.modifiers.draggable);
-          };
-        }
+        };
       };
 
       const mouseMoveBind = mouseMove();
@@ -302,22 +278,26 @@ export default class Game {
 
           setTimeout(() => {
             if (e.target.classList.contains(this.elements.grid.button.modifiers.inactive)) {
-              let inactiveConfig = this.getElementConfigByNode(e.target),
-                draggableConfig = this.getElementConfigByNode(drag.element);
+              const inactiveConfig = this.getElementConfigByNode(e.target);
+              const draggableConfig = this.getElementConfigByNode(drag.element);
 
-              let inactiveCoords = this.getElementCoordinatesByID(inactiveConfig.id),
-                draggableCoords = this.getElementCoordinatesByID(draggableConfig.id);
+              const inactiveCoords = this.getElementCoordinatesByID(inactiveConfig.id);
+              const draggableCoords = this.getElementCoordinatesByID(draggableConfig.id);
 
               this.moveElementTo(draggableCoords, inactiveCoords);
             }
 
-            if (!this.isMoving)
-              this.moveElementTo(this.getElementCoordinatesByID(targetConfig.id), this.getElementCoordinatesAvailable(targetConfig.id));
+            if (!this.isMoving) {
+              this.moveElementTo(
+                this.getElementCoordinatesByID(targetConfig.id),
+                this.getElementCoordinatesAvailable(targetConfig.id),
+              );
+            }
 
             setTimeout(() => {
               drag.element.removeAttribute('style');
             });
-          })
+          });
         });
 
         document.removeEventListener('mousemove', mouseMoveBind);
@@ -333,56 +313,61 @@ export default class Game {
     try {
       this.grid.forEach((rowData, rowIndex) => {
         rowData.forEach((columnData, columnIndex) => {
-          if (columnData === elementID)
+          if (columnData === elementID) {
             throw new Error(JSON.stringify({
               x: columnIndex,
-              y: rowIndex
+              y: rowIndex,
             }));
+          }
         });
       });
+
+      return null;
     } catch (e) {
       return JSON.parse(e.message);
     }
   }
 
   getElementCoordinatesAvailable(elementID) {
-    let coordinates = this.getElementCoordinatesByID(elementID);
+    const coordinates = this.getElementCoordinatesByID(elementID);
 
     if (this.grid[coordinates.y] && this.grid[coordinates.y][coordinates.x + 1] === 0) {
       return {
         x: coordinates.x + 1,
-        y: coordinates.y
+        y: coordinates.y,
       };
-    } else if (this.grid[coordinates.y] && this.grid[coordinates.y][coordinates.x - 1] === 0) {
+    }
+    if (this.grid[coordinates.y] && this.grid[coordinates.y][coordinates.x - 1] === 0) {
       return {
         x: coordinates.x - 1,
-        y: coordinates.y
+        y: coordinates.y,
       };
-    } else if (this.grid[coordinates.y + 1] && this.grid[coordinates.y + 1][coordinates.x] === 0) {
+    }
+    if (this.grid[coordinates.y + 1] && this.grid[coordinates.y + 1][coordinates.x] === 0) {
       return {
         x: coordinates.x,
-        y: coordinates.y + 1
+        y: coordinates.y + 1,
       };
-    } else if (this.grid[coordinates.y - 1] && this.grid[coordinates.y - 1][coordinates.x] === 0) {
+    }
+    if (this.grid[coordinates.y - 1] && this.grid[coordinates.y - 1][coordinates.x] === 0) {
       return {
         x: coordinates.x,
-        y: coordinates.y - 1
+        y: coordinates.y - 1,
       };
     }
 
     return false;
   }
 
-  getElementCoordinatesAbsolute(node) {
-    return node.getBoundingClientRect();
-  }
-
   getElementConfigByNode(node) {
-    return this.gridElements.reduce((out, config) => (config.element === node) ? config : out, null);
+    return this.gridElements.reduce((out, config) => ((config.element === node)
+      ? config
+      : out), null);
   }
 
   getNodeByCoordinates(x, y) {
-    return this.elements.grid.container.el.children[x + y * this.$app.config.rows].children[0] || null;
+    return this.elements.grid.container.el.children[x + y * this.$app.config.rows].children[0]
+      || null;
   }
 
   sortGridElements() {
@@ -393,17 +378,18 @@ export default class Game {
         return out;
       }, [])
       .forEach((id) => {
-        let target = this.gridElements.find((item) => item.id === id),
-          targetCoords = this.getElementCoordinatesByID(id),
-          targetByCoords = this.getNodeByCoordinates(targetCoords.x, targetCoords.y);
+        const target = this.gridElements.find((item) => item.id === id);
+        const targetCoords = this.getElementCoordinatesByID(id);
+        const targetByCoords = this.getNodeByCoordinates(targetCoords.x, targetCoords.y);
 
         target.element.classList[(this.isMoveAvailable(id)) ? 'add' : 'remove'](this.elements.grid.button.modifiers.active);
 
         if (targetByCoords !== target.element) {
           this.switchNodes(target.element, this.getElementConfigByNode(targetByCoords).element);
 
-          if (this.isActive)
-            this.stats.steps++;
+          if (this.isActive) {
+            this.stats.steps += 1;
+          }
         }
       });
   }
@@ -413,7 +399,7 @@ export default class Game {
   }
 
   moveElementTo(coordsCurrent, coordsNew) {
-    let backup = this.grid[coordsCurrent.y][coordsCurrent.x];
+    const backup = this.grid[coordsCurrent.y][coordsCurrent.x];
 
     this.grid[coordsCurrent.y][coordsCurrent.x] = this.grid[coordsNew.y][coordsNew.x];
     this.grid[coordsNew.y][coordsNew.x] = backup;
@@ -422,10 +408,12 @@ export default class Game {
   }
 
   switchNodes(first, second) {
-    let parentFirst = first.parentNode,
-      parentSecond = second.parentNode,
-      coordsFirst = this.getElementCoordinatesAbsolute(first),
-      coordsSecond = this.getElementCoordinatesAbsolute(second);
+    const firstLocal = first;
+    const secondLocal = second;
+    const parentFirst = first.parentNode;
+    const parentSecond = second.parentNode;
+    const coordsFirst = Mixin.getElementCoordinatesAbsolute(first);
+    const coordsSecond = Mixin.getElementCoordinatesAbsolute(second);
 
     parentFirst.innerHTML = '';
     parentSecond.innerHTML = '';
@@ -433,13 +421,15 @@ export default class Game {
     parentFirst.append(second);
     parentSecond.append(first);
 
-    first.style.transition = 'unset';
-    if (!first.classList.contains(this.elements.grid.button.modifiers.inactive))
-      first.style.transform = `translate(${coordsFirst.x - coordsSecond.x}px, ${coordsFirst.y - coordsSecond.y}px)`;
+    firstLocal.style.transition = 'unset';
+    if (!firstLocal.classList.contains(this.elements.grid.button.modifiers.inactive)) {
+      firstLocal.style.transform = `translate(${coordsFirst.x - coordsSecond.x}px, ${coordsFirst.y - coordsSecond.y}px)`;
+    }
 
-    second.style.transition = 'unset';
-    if (!second.classList.contains(this.elements.grid.button.modifiers.inactive))
-      second.style.transform = `translate(${coordsSecond.x - coordsFirst.x}px, ${coordsSecond.y - coordsFirst.y}px)`;
+    secondLocal.style.transition = 'unset';
+    if (!secondLocal.classList.contains(this.elements.grid.button.modifiers.inactive)) {
+      secondLocal.style.transform = `translate(${coordsSecond.x - coordsFirst.x}px, ${coordsSecond.y - coordsFirst.y}px)`;
+    }
 
     setTimeout(() => {
       this.playSound();
@@ -481,7 +471,7 @@ export default class Game {
     this.elements.grid.container.el.style.transition = 'unset';
     this.elements.grid.container.el.style.opacity = '0';
 
-    let imageNumber = (this.loadedData)
+    const imageNumber = (this.loadedData)
       ? this.loadedData.imageNumber
       : null;
 
@@ -521,8 +511,7 @@ export default class Game {
 
     Object.keys(this.elements.stats)
       .forEach((key) => {
-        if (key === 'container')
-          return;
+        if (key === 'container') return;
 
         this.elements.stats[key].el = document.createElement('div');
         this.elements.stats[key].el.className = this.elements.stats[key].class;
@@ -532,11 +521,13 @@ export default class Game {
   }
 
   getStatsProxy(obj) {
-    let self = this;
+    const self = this;
 
     return new Proxy(obj, {
       set(target, property, value) {
-        target[property] = value;
+        const proxy = target;
+
+        proxy[property] = value;
 
         if (['minutes', 'seconds'].includes(property)) {
           self.elements.stats.time.el.innerText = `${self.elements.stats.time.text} ${self.getTimeString()}`;
@@ -545,19 +536,18 @@ export default class Game {
         }
 
         return true;
-      }
+      },
     });
   }
 
   startListenGameTime() {
     setTimeout(() => {
-      if (!this.isActive)
-        return;
+      if (!this.isActive) return;
 
-      this.stats.seconds++;
+      this.stats.seconds += 1;
 
       if (this.stats.seconds === 60) {
-        this.stats.minutes++;
+        this.stats.minutes += 1;
         this.stats.seconds = 0;
       }
 
@@ -570,20 +560,19 @@ export default class Game {
   }
 
   loadSounds() {
-    for (let key in this.sounds) {
+    Object.keys(this.sounds).forEach((key) => {
       fetch(this.sounds[key].src)
         .then((response) => response.arrayBuffer())
         .then((buffer) => this.audio.decodeAudioData(buffer, (decodedData) => {
           this.sounds[key].buffer = decodedData;
         }));
-    }
+    });
   }
 
   playSound() {
-    if (!this.$app.config.isSoundAllowed)
-      return
+    if (!this.$app.config.isSoundAllowed) return;
 
-    let source = this.audio.createBufferSource();
+    const source = this.audio.createBufferSource();
 
     source.connect(this.audio.destination);
     source.buffer = this.sounds.snap.buffer;
@@ -594,39 +583,38 @@ export default class Game {
     this.imageNumber = imageNumber || Math.ceil(150 * Math.random());
     this.imageParts.length = 0;
 
-    let imageName = `./assets/img/box/${this.imageNumber}.jpg`,
-      image = new Image();
+    const imageName = `./assets/img/box/${this.imageNumber}.jpg`;
+    const image = new Image();
 
     image.onload = () => {
-      let pathX = image.width / this.$app.config.columns,
-        pathY = image.height / this.$app.config.rows;
+      const pathX = image.width / this.$app.config.columns;
+      const pathY = image.height / this.$app.config.rows;
 
-      for (let row = 0; row < this.$app.config.rows; row++) {
-        for (let col = 0; col < this.$app.config.columns; col++) {
-          let canvas = document.createElement('canvas');
-          let context = canvas.getContext('2d');
+      for (let row = 0; row < this.$app.config.rows; row += 1) {
+        for (let col = 0; col < this.$app.config.columns; col += 1) {
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
           canvas.height = '100';
           canvas.width = '100';
 
-
-          context.drawImage(image, col * pathX, row * pathY, pathX, pathY, 0, 0, canvas.width, canvas.height);
+          context.drawImage(image, col * pathX, row * pathY, pathX, pathY, 0, 0,
+            canvas.width, canvas.height);
 
           this.imageParts.push(canvas);
         }
       }
 
-      cb && cb();
+      return cb && cb();
     };
     image.src = imageName;
   }
 
   setGridContainerClass(length) {
-    let gridElement = this.elements.grid.container.el,
-      modifiers = this.elements.grid.container.modifiers;
+    const gridElement = this.elements.grid.container.el;
+    const modifiersCollection = this.elements.grid.container.modifiers;
 
-    Object.keys(modifiers)
-      .forEach((modifier) => {
-        gridElement.classList[modifier === `container-${length}` ? 'add' : 'remove'](modifier);
-      });
+    Object.keys(modifiersCollection).forEach((modifier) => {
+      gridElement.classList[modifier === `container-${length}` ? 'add' : 'remove'](modifier);
+    });
   }
 }

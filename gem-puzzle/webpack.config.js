@@ -5,6 +5,7 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 const OptimizeAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 const isProd = !isDev
@@ -99,6 +100,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: 'index.html',
       minify: isProd,
+      favicon: 'assets/img/icon/favicon.ico',
     }),
     new MiniCssExtractPlugin({
       filename: `style${isProd ? '.[contenthash]' : ''}.css`,
@@ -109,5 +111,6 @@ module.exports = {
         {from: 'assets/img/box', to: 'assets/img/box'},
       ],
     }),
+    new ESLintPlugin()
   ]
 }
