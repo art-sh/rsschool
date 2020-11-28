@@ -1,4 +1,7 @@
 import Mixin from './js/mixins/main';
+import Generator from './js/components/solver/Generator/Generator';
+import Table from './js/components/solver/Table/Table';
+import Solver from './js/components/solver/Solver/Solver';
 
 export default class Game {
   constructor(app) {
@@ -94,41 +97,24 @@ export default class Game {
   }
 
   getRandomGrid(grid = null) {
-    if (grid && grid.length) {
-      let gridCount = 0;
-      this.grid.length = 0;
+    let gridLocal = grid;
 
-      grid.forEach((line) => {
-        this.grid.push(line);
-
-        gridCount += line.length;
-      });
-
-      this.gridInitial = Mixin.getGridInitialByLength(gridCount);
-
-      return;
+    if (!gridLocal) {
+      do {
+        gridLocal = new Generator(this.$app.config.columns, 75).matrix;
+      } while (Mixin.isGridSolvable(gridLocal));
     }
 
-    const gridInitial = Mixin.getGridInitialByLength(this.$app.config.columns
-      * this.$app.config.rows);
-
+    let gridCount = 0;
     this.grid.length = 0;
-    this.gridInitial = Array.from(gridInitial);
 
-    for (let row = 0; row < this.$app.config.rows; row += 1) {
-      const rowData = [];
+    gridLocal.forEach((line) => {
+      this.grid.push(line);
 
-      for (let column = 0; column < this.$app.config.columns; column += 1) {
-        const valuesKey = Math.floor((Math.random()) * gridInitial.length);
+      gridCount += line.length;
+    });
 
-        rowData.push(gridInitial[valuesKey]);
-        gridInitial.splice(valuesKey, 1);
-      }
-
-      this.grid.push(rowData);
-    }
-
-    if (!Mixin.isGridSolvable(this.getGridAsArray())) this.getRandomGrid();
+    this.gridInitial = Mixin.getGridInitialByLength(gridCount);
   }
 
   getGridAsArray() {
@@ -307,6 +293,16 @@ export default class Game {
       document.addEventListener('mousemove', mouseMoveBind);
       document.addEventListener('mouseup', mouseUp);
     });
+  }
+
+  getElementCoordinatesByPosition(position) {
+    const y = Math.floor(position / this.$app.config.columns);
+    const x = position - (y * this.$app.config.columns);
+
+    return {
+      x,
+      y,
+    };
   }
 
   getElementCoordinatesByID(elementID) {
@@ -501,6 +497,60 @@ export default class Game {
       this.isGameEnded = this.isGameComplete();
       this.loadedData = null;
     }, imageNumber);
+  }
+
+  autoFinishGame() {
+    if (this.$app.config.columns !== 4) {
+      return alert('Available only for 4x4');
+    }
+
+    this.isGameEnded = true;
+    this.isActive = false;
+
+    const solutionMoves = this.getSolution();
+
+    if (!solutionMoves) {
+      this.isGameEnded = false;
+
+      return alert('Solution not found');
+    }
+
+    const step = (moves) => {
+      const needlePosition = moves.shift();
+      const emptyCoords = this.getElementCoordinatesByID(0);
+      const position = this.getElementCoordinatesByPosition(needlePosition);
+
+      this.moveElementTo(emptyCoords, position);
+
+      setTimeout(() => {
+        if (moves.length) {
+          return step(moves);
+        }
+
+        if (Mixin.isGridSolvable(this.grid)) {
+          return alert('This game is not counted because you use hints');
+        }
+
+        return true;
+      }, 550);
+    };
+
+    step(solutionMoves);
+
+    return true;
+  }
+
+  getSolution() {
+    const table = new Table(this.grid);
+    const solver = new Solver(table);
+
+    const solutions = solver.search(true);
+
+    if (!solutions) return null;
+
+    solutions.shift();
+
+    return solutions.map((move) => move - 1);
   }
 
   buildControlsContainer() {

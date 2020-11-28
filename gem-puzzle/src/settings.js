@@ -50,6 +50,26 @@ export default class Settings {
             }.bind(this),
           },
         },
+        autoFinish: {
+          container: {
+            class: 'puzzle__header-settings-line',
+            el: null,
+          },
+          button: {
+            class: 'puzzle__header-settings-line-button',
+            el: null,
+            text: 'Auto finish current game',
+            click: function () {
+              this.$app.game.autoFinishGame();
+              this.toggle();
+            }.bind(this),
+          },
+          subtext: {
+            class: 'puzzle__header-settings-line-subtext',
+            el: null,
+            text: '(4x4)',
+          },
+        },
         grid: {
           container: {
             class: 'puzzle__header-settings-line',
