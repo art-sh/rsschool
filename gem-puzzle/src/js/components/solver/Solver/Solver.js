@@ -9,9 +9,9 @@ export default class Solver {
 
   getMin() {
     return this.opened.get([...this.opened.keys()].reduce((curMin, key) => {
-      const { f } = this.opened.get(key);
-      if (f < curMin.min) {
-        curMin.min = f;
+      const { fullHeap } = this.opened.get(key);
+      if (fullHeap < curMin.min) {
+        curMin.min = fullHeap;
         curMin.key = key;
       }
       return curMin;
@@ -21,7 +21,7 @@ export default class Solver {
     }).key);
   }
 
-  isSolveable() {
+  isSolvable() {
     const curNode = this.getMin();
     const array = curNode.getUnique().split(',').map((val) => +val);
 
@@ -49,7 +49,7 @@ export default class Solver {
 
   search(short = false) {
     if (this.length === 4) {
-      if (!this.isSolveable()) {
+      if (!this.isSolvable()) {
         return null;
       }
     }
@@ -64,7 +64,7 @@ export default class Solver {
       this.opened.delete(curNode.getUnique());
       this.closed.set(curNode.getUnique(), curNode);
 
-      const nextStages = curNode.nextStages();
+      const nextStages = curNode.getNextStages();
       nextStages.forEach((table) => {
         if (this.closed.has(table.getUnique())) {
           return;
@@ -72,7 +72,7 @@ export default class Solver {
         const repeat = this.opened.get(table.getUnique());
         if (!repeat) {
           this.opened.set(table.getUnique(), table);
-        } else if (table.g < repeat.g) {
+        } else if (table.globalNesting < repeat.globalNesting) {
           this.opened.set(table.getUnique(), table);
         }
       });

@@ -14,7 +14,7 @@ export default function generatePass(size = 4, count = 20) {
   let result = new Table(matrix);
 
   while (counter > 0) {
-    const next = result.nextStages();
+    const next = result.getNextStages();
     const rand = Math.floor(Math.random() * next.length);
     result = next[rand];
     counter -= 1;

@@ -1,5 +1,5 @@
 import Mixin from './js/mixins/main';
-import Generator from './js/components/solver/Generator/Generator';
+import generatePass from './js/components/solver/Generator/Generator';
 import Table from './js/components/solver/Table/Table';
 import Solver from './js/components/solver/Solver/Solver';
 
@@ -101,7 +101,7 @@ export default class Game {
 
     if (!gridLocal) {
       do {
-        gridLocal = new Generator(this.$app.config.columns, 75).matrix;
+        gridLocal = generatePass(this.$app.config.columns, 75).matrix;
       } while (Mixin.isGridSolvable(gridLocal));
     }
 
@@ -161,7 +161,7 @@ export default class Game {
   }
 
   generateGridItem(id) {
-    const config = JSON.parse(JSON.stringify(this.gridElementExample));
+    const config = {...this.gridElementExample};
 
     const gridItem = document.createElement('div');
     gridItem.className = this.elements.grid.item.class;
@@ -306,50 +306,54 @@ export default class Game {
   }
 
   getElementCoordinatesByID(elementID) {
-    try {
-      this.grid.forEach((rowData, rowIndex) => {
-        rowData.forEach((columnData, columnIndex) => {
-          if (columnData === elementID) {
-            throw new Error(JSON.stringify({
-              x: columnIndex,
-              y: rowIndex,
-            }));
-          }
-        });
-      });
-
-      return null;
-    } catch (e) {
-      return JSON.parse(e.message);
+    for (let rowIndex = 0; this.grid.length; rowIndex += 1) {
+      for (let columnIndex = 0; columnIndex < this.grid[rowIndex].length; columnIndex += 1) {
+        if (this.grid[rowIndex][columnIndex] === elementID) {
+          return {
+            x: columnIndex,
+            y: rowIndex,
+          };
+        }
+      }
     }
+
+    throw new Error('Coordinates are not found');
   }
 
   getElementCoordinatesAvailable(elementID) {
     const coordinates = this.getElementCoordinatesByID(elementID);
+    const availableMoves = [
+      {
+        x: 1,
+        y: 0,
+      },
+      {
+        x: -1,
+        y: 0,
+      },
+      {
+        x: 0,
+        y: 1,
+      },
+      {
+        x: 0,
+        y: -1,
+      },
+    ];
 
-    if (this.grid[coordinates.y] && this.grid[coordinates.y][coordinates.x + 1] === 0) {
-      return {
-        x: coordinates.x + 1,
-        y: coordinates.y,
-      };
-    }
-    if (this.grid[coordinates.y] && this.grid[coordinates.y][coordinates.x - 1] === 0) {
-      return {
-        x: coordinates.x - 1,
-        y: coordinates.y,
-      };
-    }
-    if (this.grid[coordinates.y + 1] && this.grid[coordinates.y + 1][coordinates.x] === 0) {
-      return {
-        x: coordinates.x,
-        y: coordinates.y + 1,
-      };
-    }
-    if (this.grid[coordinates.y - 1] && this.grid[coordinates.y - 1][coordinates.x] === 0) {
-      return {
-        x: coordinates.x,
-        y: coordinates.y - 1,
-      };
+    for (const availableMoveIndex in availableMoves) {
+      if (Object.prototype.hasOwnProperty.call(availableMoves, availableMoveIndex)) {
+        const availableMove = availableMoves[availableMoveIndex];
+
+        if (this.grid[coordinates.y + availableMove.y]
+          && this.grid[coordinates.y + availableMove.y][coordinates.x + availableMove.x] === 0
+        ) {
+          return {
+            x: coordinates.x + availableMove.x,
+            y: coordinates.y + availableMove.y,
+          };
+        }
+      }
     }
 
     return false;
@@ -417,15 +421,26 @@ export default class Game {
     parentFirst.append(second);
     parentSecond.append(first);
 
-    firstLocal.style.transition = 'unset';
-    if (!firstLocal.classList.contains(this.elements.grid.button.modifiers.inactive)) {
-      firstLocal.style.transform = `translate(${coordsFirst.x - coordsSecond.x}px, ${coordsFirst.y - coordsSecond.y}px)`;
-    }
+    const inactiveTransition = (e) => {
+      e.target.ontransitionend = null;
 
-    secondLocal.style.transition = 'unset';
-    if (!secondLocal.classList.contains(this.elements.grid.button.modifiers.inactive)) {
-      secondLocal.style.transform = `translate(${coordsSecond.x - coordsFirst.x}px, ${coordsSecond.y - coordsFirst.y}px)`;
-    }
+      e.target.dispatchEvent(new CustomEvent('moveend', {
+        bubbles: true,
+      }));
+    };
+
+    [firstLocal, secondLocal].forEach((element, index) => {
+      element.style.transition = 'unset';
+
+      if (!element.classList.contains(this.elements.grid.button.modifiers.inactive)) {
+        element.style.transform = (!index)
+          ? `translate(${coordsFirst.x - coordsSecond.x}px, ${coordsFirst.y - coordsSecond.y}px)`
+          : `translate(${coordsSecond.x - coordsFirst.x}px, ${coordsSecond.y - coordsFirst.y}px)`;
+      } else {
+        element.style.transform = 'translate(0px, 0px)';
+        element.ontransitionend = inactiveTransition;
+      }
+    });
 
     setTimeout(() => {
       this.playSound();
@@ -436,11 +451,14 @@ export default class Game {
   }
 
   isGameComplete() {
-    return JSON.stringify(this.gridInitial) === JSON.stringify(this.grid.reduce((out, item) => {
+    const {gridInitial} = this;
+    const gridCurrent = this.grid.reduce((out, item) => {
       out.push(...item);
 
       return out;
-    }, []));
+    }, []);
+
+    return Mixin.checkArrayMatch(gridInitial, gridCurrent);
   }
 
   handleSuccessEnd() {
@@ -475,7 +493,6 @@ export default class Game {
       if (this.loadedData) {
         this.buildGridItems(this.loadedData.grid);
 
-        this.stats.minutes = this.loadedData.stats.minutes || 0;
         this.stats.seconds = this.loadedData.stats.seconds || 0;
         this.stats.steps = this.loadedData.stats.steps || 0;
       } else {
@@ -483,7 +500,6 @@ export default class Game {
 
         this.id = Math.random();
 
-        this.stats.minutes = 0;
         this.stats.seconds = 0;
         this.stats.steps = 0;
       }
@@ -516,23 +532,25 @@ export default class Game {
     }
 
     const step = (moves) => {
-      const needlePosition = moves.shift();
+      const needlePosition = moves[0];
       const emptyCoords = this.getElementCoordinatesByID(0);
       const position = this.getElementCoordinatesByPosition(needlePosition);
 
-      this.moveElementTo(emptyCoords, position);
+      if (moves.length) {
+        const handler = () => {
+          this.elements.grid.container.el.removeEventListener('moveend', handler);
 
-      setTimeout(() => {
-        if (moves.length) {
-          return step(moves);
-        }
+          step(moves);
+        };
 
-        if (Mixin.isGridSolvable(this.grid)) {
-          return alert('This game is not counted because you use hints');
-        }
+        this.elements.grid.container.el.addEventListener('moveend', handler);
+      } else if (!moves.length && Mixin.isGridSolvable(this.grid)) {
+        return alert('This game is not counted because you use hints');
+      }
 
-        return true;
-      }, 550);
+      moves.shift();
+
+      return this.moveElementTo(emptyCoords, position);
     };
 
     step(solutionMoves);
@@ -596,17 +614,12 @@ export default class Game {
 
       this.stats.seconds += 1;
 
-      if (this.stats.seconds === 60) {
-        this.stats.minutes += 1;
-        this.stats.seconds = 0;
-      }
-
       this.startListenGameTime();
     }, 1000 - new Date().getMilliseconds());
   }
 
   getTimeString() {
-    return `${this.stats.minutes.toString().padStart(2, '0')}:${this.stats.seconds.toString().padStart(2, '0')}`;
+    return `${Math.floor(this.stats.seconds / 60).toString().padStart(2, '0')}:${(this.stats.seconds % 60).toString().padStart(2, '0')}`;
   }
 
   loadSounds() {

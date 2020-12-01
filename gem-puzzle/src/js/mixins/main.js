@@ -1,7 +1,4 @@
 export default {
-  getElements() {
-    return this.elements;
-  },
   getElementsByConfig(config) {
     let parentNode = null;
 
@@ -84,5 +81,8 @@ export default {
   },
   fromJson(data) {
     return JSON.parse(data);
+  },
+  checkArrayMatch(array1, array2) {
+    return array1.length === array2.length && array1.every((value, index) => value === array2[index]);
   },
 };

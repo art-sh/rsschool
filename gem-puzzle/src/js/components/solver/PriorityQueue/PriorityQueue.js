@@ -6,8 +6,8 @@ export default class PriorityQueue {
   _heapify(i) {
     const l = (i * 2) + 1;
     const r = (i * 2) + 2;
-    let largest = l < this.data.length && this.data[l].f < this.data[i].f ? l : i;
-    if (r < this.data.length && this.data[r].f < this.data[largest].f) {
+    let largest = l < this.data.length && this.data[l].fullHeap < this.data[i].fullHeap ? l : i;
+    if (r < this.data.length && this.data[r].fullHeap < this.data[largest].fullHeap) {
       largest = r;
     }
     if (largest !== i) {
@@ -30,7 +30,7 @@ export default class PriorityQueue {
 
   push(element) {
     let i = this.data.length;
-    while (i > 0 && this.data[this._Parent(i)].f < element.f) {
+    while (i > 0 && this.data[this._Parent(i)].fullHeap < element.fullHeap) {
       this.data[i] = this.data[this._Parent(i)];
       i = this._Parent(i);
     }

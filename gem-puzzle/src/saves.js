@@ -120,10 +120,10 @@ export default class Saves {
 
     const remove = document.createElement('div');
     remove.className = config.actions.remove.class;
-    remove.onclick = function () {
+    remove.onclick = () => {
       this.$app.storage.removeSavedGame(save.game.id);
       this.show();
-    }.bind(this);
+    };
 
     actions.append(load);
     actions.append(remove);
