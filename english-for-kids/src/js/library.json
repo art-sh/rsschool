@@ -1,0 +1,281 @@
+{
+  "categories": {
+    "animals": [
+      {
+        "key": "cat",
+        "translation": "кот"
+      },
+      {
+        "key": "chick",
+        "translation": "цыпленок"
+      },
+      {
+        "key": "dog",
+        "translation": "собака"
+      },
+      {
+        "key": "elephant",
+        "translation": "слон"
+      },
+      {
+        "key": "giraffe",
+        "translation": "жираф"
+      },
+      {
+        "key": "horse",
+        "translation": "лошадь"
+      },
+      {
+        "key": "pig",
+        "translation": "свинья"
+      },
+      {
+        "key": "rabbit",
+        "translation": "кролик"
+      }
+    ],
+    "body": [
+      {
+        "key": "brows",
+        "translation": "брови"
+      },
+      {
+        "key": "cheek",
+        "translation": "щека"
+      },
+      {
+        "key": "eyes",
+        "translation": "глаза"
+      },
+      {
+        "key": "forehead",
+        "translation": "лоб"
+      },
+      {
+        "key": "hair",
+        "translation": "волосы"
+      },
+      {
+        "key": "mouth",
+        "translation": "рот"
+      },
+      {
+        "key": "nose",
+        "translation": "нос"
+      },
+      {
+        "key": "teeth",
+        "translation": "зубы"
+      }
+    ],
+    "clothes": [
+      {
+        "key": "boots",
+        "translation": "ботинки"
+      },
+      {
+        "key": "hat",
+        "translation": "шляпа"
+      },
+      {
+        "key": "jacket",
+        "translation": "куртка"
+      },
+      {
+        "key": "jeans",
+        "translation": "джинсы"
+      },
+      {
+        "key": "skirt",
+        "translation": "юбка"
+      },
+      {
+        "key": "sneakers",
+        "translation": "кроссовки"
+      },
+      {
+        "key": "socks",
+        "translation": "носки"
+      },
+      {
+        "key": "t-shirt",
+        "translation": "футболка"
+      }
+    ],
+    "colors": [
+      {
+        "key": "black",
+        "translation": "чёрный"
+      },
+      {
+        "key": "blue",
+        "translation": "голубой"
+      },
+      {
+        "key": "green",
+        "translation": "зелёный"
+      },
+      {
+        "key": "orange",
+        "translation": "оранжевый"
+      },
+      {
+        "key": "purple",
+        "translation": "фиолетовый"
+      },
+      {
+        "key": "red",
+        "translation": "красный"
+      },
+      {
+        "key": "white",
+        "translation": "белый"
+      },
+      {
+        "key": "yellow",
+        "translation": "жёлтый"
+      }
+    ],
+    "emotions": [
+      {
+        "key": "angry",
+        "translation": "сердитый"
+      },
+      {
+        "key": "happy",
+        "translation": "счастливый"
+      },
+      {
+        "key": "laugh",
+        "translation": "смеющийся"
+      },
+      {
+        "key": "sad",
+        "translation": "печальный"
+      },
+      {
+        "key": "scared",
+        "translation": "напуганный"
+      },
+      {
+        "key": "smile",
+        "translation": "улыбающийся"
+      },
+      {
+        "key": "surprised",
+        "translation": "удивленный"
+      },
+      {
+        "key": "tired",
+        "translation": "уставший"
+      }
+    ],
+    "family": [
+      {
+        "key": "aunt",
+        "translation": "тётя"
+      },
+      {
+        "key": "brother",
+        "translation": "брат"
+      },
+      {
+        "key": "father",
+        "translation": "отец"
+      },
+      {
+        "key": "grandfather",
+        "translation": "дедушка"
+      },
+      {
+        "key": "grandmother",
+        "translation": "бабушка"
+      },
+      {
+        "key": "mother",
+        "translation": "мама"
+      },
+      {
+        "key": "sister",
+        "translation": "сестра"
+      },
+      {
+        "key": "uncle",
+        "translation": "дядя"
+      }
+    ],
+    "foods": [
+      {
+        "key": "apple",
+        "translation": "яблоко"
+      },
+      {
+        "key": "banana",
+        "translation": "банан"
+      },
+      {
+        "key": "bread",
+        "translation": "хлеб"
+      },
+      {
+        "key": "cheese",
+        "translation": "сыр"
+      },
+      {
+        "key": "cucumber",
+        "translation": "огурец"
+      },
+      {
+        "key": "ice-cream",
+        "translation": "мороженое"
+      },
+      {
+        "key": "milk",
+        "translation": "молоко"
+      },
+      {
+        "key": "pear",
+        "translation": "груша"
+      },
+      {
+        "key": "tomato",
+        "translation": "помидор"
+      }
+    ],
+    "movement": [
+      {
+        "key": "climb",
+        "translation": "лезть"
+      },
+      {
+        "key": "drive",
+        "translation": "водить"
+      },
+      {
+        "key": "fly",
+        "translation": "летать"
+      },
+      {
+        "key": "jump",
+        "translation": "прыгать"
+      },
+      {
+        "key": "rove",
+        "translation": "бродить"
+      },
+      {
+        "key": "run",
+        "translation": "бежать"
+      },
+      {
+        "key": "sit",
+        "translation": "сидеть"
+      },
+      {
+        "key": "swim",
+        "translation": "плыть"
+      }
+    ]
+  }
+}
+
