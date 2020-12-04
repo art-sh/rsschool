@@ -1,5 +1,7 @@
 import Library from './js/library.json';
 import Menu from './js/components/Menu';
+import Router from './js/components/Router';
+import View from './js/components/View';
 
 require('./style.scss');
 
@@ -11,7 +13,9 @@ class App {
 
     this.requireImages();
 
+    this.view = new View(this);
     this.menu = new Menu(this);
+    this.router = new Router(this, this.view);
 
     this.elements = {
       container: {
@@ -22,9 +26,18 @@ class App {
   }
 
   init() {
+    this.view.init();
     this.menu.init();
 
+    this.router.navigate('home', true);
+
     console.log(this);
+  }
+
+  appendToContainer(node) {
+    if (node instanceof HTMLElement) {
+      this.elements.container.el.append(node);
+    }
   }
 
   requireImages() {

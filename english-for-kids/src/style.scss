@@ -7,6 +7,7 @@ $color-green-lighter: #94D034;
 $color-green-main: #63A100;
 $color-green-darker: #56791E;
 $color-green-dark: #416900;
+$color-pink-light: #C85A90;
 
 
 $transition-short: 0.15s;
@@ -44,9 +45,72 @@ body {
   height: 100%;
 }
 
+.view {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 6.5rem;
+  align-items: center;
+  justify-content: center;
+
+  &__content {
+    width: 100%;
+    height: 100%;
+
+    &-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+
+      &-item {
+        border: 1px solid white;
+        width: 25rem;
+        height: 18rem;
+        margin: 2rem;
+        background-color: $color-pink-light;
+        border-radius: 1rem;
+        user-select: none;
+
+        &-inner {
+          height: 100%;
+          border-radius: inherit;
+          overflow: hidden;
+
+          &-front {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+
+            &-image {
+              height: 100%;
+              background-color: $color-black;
+              background-position: center;
+              background-size: cover;
+            }
+
+            &-footer {
+              height: 4rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              &-translation {
+                line-height: 4rem;
+                font-size: 2.5rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .menu {
   position: fixed;
   top: 0;
+  height: 0;
   width: 100%;
   z-index: 1;
   user-select: none;

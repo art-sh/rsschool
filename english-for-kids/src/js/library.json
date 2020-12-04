@@ -1,5 +1,39 @@
 {
   "categories": {
+    "adjective": [
+      {
+        "key": "big",
+        "translation": "большой"
+      },
+      {
+        "key": "fast",
+        "translation": "быстрый"
+      },
+      {
+        "key": "friendly",
+        "translation": "дружелюбный"
+      },
+      {
+        "key": "old",
+        "translation": "старый"
+      },
+      {
+        "key": "slow",
+        "translation": "медленный"
+      },
+      {
+        "key": "small",
+        "translation": "маленький"
+      },
+      {
+        "key": "unfriendly",
+        "translation": "враждебный"
+      },
+      {
+        "key": "young",
+        "translation": "молодой"
+      }
+    ],
     "animals": [
       {
         "key": "cat",
@@ -168,40 +202,6 @@
       {
         "key": "tired",
         "translation": "уставший"
-      }
-    ],
-    "family": [
-      {
-        "key": "aunt",
-        "translation": "тётя"
-      },
-      {
-        "key": "brother",
-        "translation": "брат"
-      },
-      {
-        "key": "father",
-        "translation": "отец"
-      },
-      {
-        "key": "grandfather",
-        "translation": "дедушка"
-      },
-      {
-        "key": "grandmother",
-        "translation": "бабушка"
-      },
-      {
-        "key": "mother",
-        "translation": "мама"
-      },
-      {
-        "key": "sister",
-        "translation": "сестра"
-      },
-      {
-        "key": "uncle",
-        "translation": "дядя"
       }
     ],
     "foods": [

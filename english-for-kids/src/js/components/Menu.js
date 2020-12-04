@@ -73,7 +73,7 @@ export default class Menu {
   }
 
   buildMenu() {
-    document.body.append(Mixin.getElementsByConfig(this.elements));
+    this.$app.appendToContainer(Mixin.getElementsByConfig(this.elements));
 
     this.buildMenuCollection();
   }
@@ -92,6 +92,7 @@ export default class Menu {
 
       menuItem.addEventListener('click', () => {
         console.log('move to', category);
+        this.$app.router.navigate(category);
         this.hide();
       });
 

@@ -53,6 +53,7 @@ module.exports = {
     overlay: true,
     compress: true,
     stats: 'errors-only',
+    writeToDisk: false,
   },
   mode: process.env.NODE_ENV,
   devtool: isDev ? 'source-map' : false,
@@ -109,6 +110,8 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: `style${isProd ? '.[contenthash]' : ''}.css`,
     }),
-    new ESLintPlugin()
+    new ESLintPlugin({
+      threads: true,
+    })
   ]
 }
