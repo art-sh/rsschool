@@ -1,8 +1,10 @@
 import Mixin from '../mixin';
+import Game from './Game';
 
 export default class View {
   constructor(app) {
     this.$app = app;
+    this.$game = null;
 
     this.elements = {
       container: {
@@ -19,28 +21,43 @@ export default class View {
             class: 'view__content-header',
             el: null,
           },
-          actions: {
-            container: {
-              class: 'view__content-actions',
-              el: null,
-            },
-          },
           pageName: {
             class: 'view__content-header-page-name',
             el: null,
           },
-          buttons: {
+          mode: {
             container: {
-              class: 'view__content-buttons',
+              class: 'view__content-header-mode',
+              el: null,
+            },
+            train: {
+              class: 'view__content-header-mode-button view__content-header-mode-button--train',
+              text: 'Train',
+              el: null,
+            },
+            separator: {
+              class: 'view__content-header-mode-separator',
+              text: '/',
               el: null,
             },
             play: {
-              class: 'view__content-buttons-play',
+              class: 'view__content-header-mode-button view__content-header-mode-button--play',
               text: 'Play',
               el: null,
             },
+          },
+          game: {
+            container: {
+              class: 'view__content-header-game',
+              el: null,
+            },
+            start: {
+              class: 'view__content-header-game-button',
+              text: 'Start',
+              el: null,
+            },
             repeat: {
-              class: 'view__content-buttons-repeat',
+              class: 'view__content-header-game-button',
               text: 'Repeat',
               el: null,
             },
@@ -50,6 +67,10 @@ export default class View {
           container: {
             class: 'view__content-stats',
             el: null,
+          },
+          item: {
+            skip: true,
+            class: 'view__content-stats-item',
           },
         },
         cards: {
@@ -73,18 +94,25 @@ export default class View {
             back: 'view__content-cards-item-inner-back',
           },
         },
-      },
-      home: {
-        skip: true,
-        container: {
-          class: 'view__container',
+        popup: {
+          container: {
+            class: 'view__popup',
+          },
         },
       },
     };
+    this.wordsCollection = {};
   }
 
   init() {
     this.buildContainer();
+    this.setViewListeners();
+
+    this.$game = new Game(this.$app, this);
+  }
+
+  getElements() {
+    return this.elements;
   }
 
   buildContainer() {
@@ -93,6 +121,7 @@ export default class View {
 
   renderPage(category) {
     this.elements.content.header.pageName.el.innerText = Mixin.uppercaseFirstLetter(category);
+    this.wordsCollection = {};
 
     this.elements.content.cards.container.el.ontransitionend = (e) => {
       if (e.target !== this.elements.content.cards.container.el) {
@@ -101,12 +130,11 @@ export default class View {
 
       this.elements.content.cards.container.el.ontransitionend = null;
       this.elements.content.cards.container.el.innerHTML = '';
-      console.log('scale', e.target);
 
-      console.log(category);
       if (category === 'home') {
         this.renderHomeView();
       } else {
+        this.$app.loadSoundsByCategory(category);
         this.renderCategory(category);
       }
 
@@ -141,7 +169,6 @@ export default class View {
   }
 
   getCard(category, config) {
-    console.log(config);
     const useFlip = category !== 'home';
     const imageName = (useFlip)
       ? `category/${category}/${config.key}.jpg`
@@ -170,8 +197,14 @@ export default class View {
     cardTranslation.innerText = (config.translation) ? Mixin.uppercaseFirstLetter(config.translation) : '';
 
     if (useFlip) {
-      card.addEventListener('click', () => {
-        this.$app.playSound(config.key);
+      cardFront.addEventListener('click', () => {
+        if (card.classList.contains('inactive')) return;
+
+        if (this.$game.currentMode === this.$game.MODE_PLAY) {
+          this.$game.validateAnswer(config.key);
+        } else {
+          this.$app.playSound(category, config.key);
+        }
       });
 
       cardFrontFooterButton.addEventListener('click', (e) => {
@@ -194,13 +227,26 @@ export default class View {
 
     if (useFlip) {
       cardFrontFooter.append(cardFrontFooterButton);
+
+      this.wordsCollection[config.key] = card;
     } else {
       card.addEventListener('click', () => {
-        console.log(config.key);
         this.$app.router.navigate(`category/${config.key}`);
       });
     }
 
     return card;
+  }
+
+  setViewListeners() {
+    document.addEventListener('route-change', () => {
+      const category = this.$app.router.currentRoute.split('/').pop();
+
+      if (category) {
+        this.$app.containerClassAdd('route-category');
+      } else {
+        this.$app.containerClassRemove('route-category');
+      }
+    });
   }
 }

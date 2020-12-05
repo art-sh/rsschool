@@ -61,10 +61,10 @@ export default class Menu {
         },
       },
     };
+    this.collectionElements = {};
   }
 
   init() {
-    console.log(this.$app.library, Mixin);
     this.buildMenu();
   }
 
@@ -76,6 +76,7 @@ export default class Menu {
     this.$app.appendToContainer(Mixin.getElementsByConfig(this.elements));
 
     this.buildMenuCollection();
+    this.setMenuListeners();
   }
 
   buildMenuCollection() {
@@ -91,8 +92,7 @@ export default class Menu {
       menuItemText.innerText = Mixin.uppercaseFirstLetter(category);
 
       menuItem.addEventListener('click', () => {
-        console.log('move to', category);
-        this.$app.router.navigate(`category/${category}`);
+        this.$app.router.navigate((category === 'home') ? '' : `category/${category}`);
         this.hide();
       });
 
@@ -105,16 +105,30 @@ export default class Menu {
       menuItemIcon.append(menuItemIconImg);
 
       this.elements.collection.container.el.append(menuItem);
+      this.collectionElements[category] = menuItem;
     });
   }
 
   show() {
     this.isShown = true;
-    this.elements.container.el.classList.add('show');
+    this.$app.containerClassAdd('menu-show');
   }
 
   hide() {
     this.isShown = false;
-    this.elements.container.el.classList.remove('show');
+    this.$app.containerClassRemove('menu-show');
+  }
+
+  setMenuListeners() {
+    document.addEventListener('route-change', () => {
+      Array.from(this.elements.collection.container.el.children).forEach((node) => node.classList.remove('active'));
+      const {currentRoute} = this.$app.router;
+
+      if (currentRoute === '') {
+        this.collectionElements.home.classList.add('active');
+      } else if (currentRoute.includes('category')) {
+        this.collectionElements[currentRoute.split('/').pop()].classList.add('active');
+      }
+    });
   }
 }

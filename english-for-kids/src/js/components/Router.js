@@ -5,6 +5,8 @@ export default class Router {
     this.$app = app;
     this.$view = view;
 
+    this.currentRoute = null;
+
     this.setHashListener();
   }
 
@@ -18,16 +20,17 @@ export default class Router {
 
   setHashListener() {
     window.addEventListener('hashchange', () => {
-      const route = window.location.hash.slice(2);
-      let category = route;
-      console.log('change', route);
+      this.currentRoute = window.location.hash.slice(2);
+      let category = this.currentRoute;
 
       if (!category) category = 'home';
 
-      if (route.search('category') !== -1) [category] = route.split('/').reverse();
+      if (this.currentRoute.search('category') !== -1) [category] = this.currentRoute.split('/').reverse();
 
       this.$view.renderPage(category);
       document.title = Mixin.uppercaseFirstLetter(category);
+
+      document.dispatchEvent(new Event('route-change'));
     });
   }
 }

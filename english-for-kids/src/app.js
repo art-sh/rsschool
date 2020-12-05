@@ -10,7 +10,12 @@ class App {
     this.library = Library;
     this.imagesMap = {};
     this.soundsMap = {};
-    this.config = {};
+    this.config = {
+      intervals: {
+        gameStep: 500,
+        popupRedirect: 3000,
+      },
+    };
 
     this.requireImages();
     this.requireSounds();
@@ -18,22 +23,28 @@ class App {
     this.view = new View(this);
     this.menu = new Menu(this);
     this.router = new Router(this, this.view);
+    this.game = null;
 
     this.elements = {
       container: {
         el: container,
       },
       menu: this.menu.getElements(),
+      view: this.view.getElements(),
     };
+
+    this.audio = new (window.AudioContext || window.webkitAudioContext)();
+    this.soundsBuffer = {};
   }
 
   init() {
     this.view.init();
     this.menu.init();
 
-    this.router.navigate(window.location.hash.slice(2) || 'home', true);
+    this.game = this.view.$game;
+    this.loadSoundsShared();
 
-    console.log(this);
+    this.router.navigate(window.location.hash.slice(2) || 'home', true);
   }
 
   appendToContainer(node) {
@@ -62,8 +73,76 @@ class App {
     });
   }
 
-  playSound(sound) {
-    console.log('playing', sound);
+  playSound(category, sound) {
+    if (!this.soundsBuffer[category][sound]) return;
+
+    const source = this.audio.createBufferSource();
+
+    source.connect(this.audio.destination);
+    source.buffer = this.soundsBuffer[category][sound];
+    source.start(0);
+  }
+
+  loadSoundsShared() {
+    Object.keys(this.soundsMap).forEach((sound) => {
+      if (!sound.includes('shared')) return;
+
+      if (this.soundsBuffer.shared === undefined) {
+        this.soundsBuffer.shared = {};
+      }
+
+      sound = sound.split('/').pop().split('.').shift();
+
+      fetch(this.soundsMap[`shared/${sound}.mp3`])
+        .then((response) => response.arrayBuffer())
+        .then((buffer) => this.audio.decodeAudioData(buffer, (decodedData) => {
+          this.soundsBuffer.shared[sound] = decodedData;
+        }));
+    });
+  }
+
+  loadSoundsByCategory(category) {
+    if (!this.library.categories[category]) {
+      return;
+    }
+
+    this.library.categories[category]
+      .reduce((out, word) => {
+        out.push(word.key);
+
+        return out;
+      }, [])
+      .forEach((key) => {
+        if (this.soundsBuffer[category] === undefined) {
+          this.soundsBuffer[category] = {};
+        }
+
+        fetch(this.soundsMap[`${category}/${key}.mp3`])
+          .then((response) => response.arrayBuffer())
+          .then((buffer) => this.audio.decodeAudioData(buffer, (decodedData) => {
+            this.soundsBuffer[category][key] = decodedData;
+          }));
+      });
+  }
+
+  getCategoryWords(category) {
+    if (!this.library.categories[category]) {
+      return [];
+    }
+
+    return this.library.categories[category].reduce((out, word) => {
+      out.push(word.key);
+
+      return out;
+    }, []);
+  }
+
+  containerClassAdd(className) {
+    this.elements.container.el.classList.add(className);
+  }
+
+  containerClassRemove(className) {
+    this.elements.container.el.classList.remove(className);
   }
 }
 
