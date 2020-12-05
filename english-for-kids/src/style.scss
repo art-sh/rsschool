@@ -62,31 +62,51 @@ body {
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
+      transition: all $transition-long ease-in-out;
+      will-change: transform;
 
       &-item {
-        border: 1px solid white;
+        margin: 2rem;
         width: 25rem;
         height: 18rem;
-        margin: 2rem;
-        background-color: $color-pink-light;
-        border-radius: 1rem;
         user-select: none;
+        perspective: 750px;
+        text-shadow: 0 0 2px $color-black;
+        font-size: 2.5rem;
+
+        $item: &;
 
         &-inner {
           height: 100%;
-          border-radius: inherit;
-          overflow: hidden;
+          position: relative;
+          border-radius: 1rem;
+          transition: all $transition-long ease-in-out;
+          transform-style: preserve-3d;
+          background-color: $color-pink-light;
+          will-change: transform, box-shadow;
+          box-shadow: 0 0 5px 0 $color-white;
+
+          #{$item}:hover & {
+            box-shadow: 0 0 15px 4px $color-white;
+          }
+
+          #{$item}:hover.available & {
+            transform: rotateX(-180deg);
+          }
 
           &-front {
             display: flex;
             flex-direction: column;
             height: 100%;
+            border-radius: inherit;
+            cursor: pointer;
 
             &-image {
               height: 100%;
               background-color: $color-black;
               background-position: center;
               background-size: cover;
+              border-radius: inherit;
             }
 
             &-footer {
@@ -94,12 +114,46 @@ body {
               display: flex;
               align-items: center;
               justify-content: center;
+              position: relative;
 
               &-translation {
                 line-height: 4rem;
-                font-size: 2.5rem;
+              }
+
+              &-button {
+                position: absolute;
+                right: 1rem;
+                width: 2.5rem;
+                height: 2.5rem;
+                background-image: url('./assets/img/flip.svg');
+                background-position: center;
+                background-size: contain;
+                filter: invert(1);
+                opacity: 0.55;
+                transition: opacity $transition-short;
+
+                &:hover {
+                  opacity: 1;
+                }
               }
             }
+          }
+
+          &-back {
+            transform: rotateX(180deg);
+            border-radius: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 125%;
+            background-color: inherit;
+          }
+
+          &-front, &-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
           }
         }
       }
@@ -149,15 +203,16 @@ body {
     height: 100vh;
     width: 100%;
     background-color: #000;
-    opacity: 0.5;
-    transform: scaleY(0);
-    transition: transform $transition-default ease-in-out;
+    opacity: 0;
+    transition: opacity $transition-default ease-in-out;
+    visibility: hidden;
     z-index: -1;
     cursor: pointer;
 
     #{$menu}.show & {
-      transform: none;
       z-index: 1;
+      visibility: visible;
+      opacity: 0.75;
     }
   }
 

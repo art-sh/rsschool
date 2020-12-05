@@ -12,16 +12,19 @@ export default class Router {
     window.location.hash = `#/${(newRoute !== 'home') ? newRoute : ''}`;
 
     if (force) {
-      document.dispatchEvent(new Event('hashchange'));
+      window.dispatchEvent(new Event('hashchange'));
     }
   }
 
   setHashListener() {
-    document.addEventListener('hashchange', () => {
-      console.log('change');
-      let category = window.location.hash.slice(2);
+    window.addEventListener('hashchange', () => {
+      const route = window.location.hash.slice(2);
+      let category = route;
+      console.log('change', route);
 
       if (!category) category = 'home';
+
+      if (route.search('category') !== -1) [category] = route.split('/').reverse();
 
       this.$view.renderPage(category);
       document.title = Mixin.uppercaseFirstLetter(category);

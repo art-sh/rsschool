@@ -9,9 +9,11 @@ class App {
   constructor(container) {
     this.library = Library;
     this.imagesMap = {};
+    this.soundsMap = {};
     this.config = {};
 
     this.requireImages();
+    this.requireSounds();
 
     this.view = new View(this);
     this.menu = new Menu(this);
@@ -29,7 +31,7 @@ class App {
     this.view.init();
     this.menu.init();
 
-    this.router.navigate('home', true);
+    this.router.navigate(window.location.hash.slice(2) || 'home', true);
 
     console.log(this);
   }
@@ -48,6 +50,20 @@ class App {
 
       this.imagesMap[imagePath.slice(2)] = importedImage.default;
     });
+  }
+
+  requireSounds() {
+    const requireImages = require.context('./assets/sound', true, /\.(mp3)$/);
+
+    requireImages.keys().forEach((imagePath) => {
+      const importedImage = requireImages(imagePath);
+
+      this.soundsMap[imagePath.slice(2)] = importedImage.default;
+    });
+  }
+
+  playSound(sound) {
+    console.log('playing', sound);
   }
 }
 

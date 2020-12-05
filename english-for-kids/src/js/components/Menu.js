@@ -92,7 +92,7 @@ export default class Menu {
 
       menuItem.addEventListener('click', () => {
         console.log('move to', category);
-        this.$app.router.navigate(category);
+        this.$app.router.navigate(`category/${category}`);
         this.hide();
       });
 

@@ -64,15 +64,15 @@ module.exports = {
         test: /\.html$/,
         use: {
           loader: 'html-loader',
-        }
+        },
       },
       {
         test: /\.css$/,
-        use: styleLoaders()
+        use: styleLoaders(),
       },
       {
         test: /\.s[ac]ss$/,
-        use: styleLoaders('sass-loader')
+        use: styleLoaders('sass-loader'),
       },
       {
         test: /\.js$/,
@@ -81,24 +81,33 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
-          }
-        }
+          },
+        },
       },
       {
         test: /\.(jpg|jpeg|png|svg)$/,
         use: {
           loader: 'file-loader',
           options: {
-            outputPath: 'assets/img'
-          }
-        }
-      }
+            outputPath: 'assets/img',
+          },
+        },
+      },
+      {
+        test: /\.(mp3)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            outputPath: 'assets/sound',
+          },
+        },
+      },
     ]
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-    }
+    },
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -112,6 +121,6 @@ module.exports = {
     }),
     new ESLintPlugin({
       threads: true,
-    })
+    }),
   ]
 }
