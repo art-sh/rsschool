@@ -1,8 +1,9 @@
 export default class Game {
-  constructor(app, view) {
+  constructor(app, view, statistics) {
     this.$app = app;
     this.$view = view;
     this.$stats = view.elements.content.gameStats.container.el;
+    this.$statistics = statistics;
 
     Object.defineProperty(this, 'MODE_PLAY', {
       value: 'play',
@@ -15,14 +16,12 @@ export default class Game {
     });
 
     this.currentMode = null;
-    this.category = null;
     this.gameWords = [];
     this.stats = {
       right: 0,
       wrong: 0,
     };
 
-    this.setGameListeners();
     this.toggleTrain();
   }
 
@@ -40,11 +39,21 @@ export default class Game {
     this.stopGame();
   }
 
-  setGameListeners() {
-    this.$view.elements.content.header.mode.play.el.addEventListener('click', this.toggleGame.bind(this));
-    this.$view.elements.content.header.mode.train.el.addEventListener('click', this.toggleTrain.bind(this));
-    this.$view.elements.content.header.game.start.el.addEventListener('click', this.startGame.bind(this));
-    this.$view.elements.content.header.game.repeat.el.addEventListener('click', this.sayCurrentWord.bind(this));
+  fillGameWordsByCategory(category) {
+    this.gameWords.length = 0;
+    const categoryWords = this.$app.getCategoryWords(category, true);
+
+    if (!categoryWords.length) return;
+
+    categoryWords.sort(() => Math.random() - 0.5).forEach((word) => this.gameWords.push(word));
+  }
+
+  fillGameWordsDifficult(collection) {
+    this.gameWords.length = 0;
+
+    if (!collection.length) return;
+
+    collection.forEach((word) => this.gameWords.push(word));
   }
 
   startGame() {
@@ -52,23 +61,10 @@ export default class Game {
 
     this.$app.containerClassAdd('game-active');
 
-    const category = this.$app.router.currentRoute.split('/').pop();
-    const categoryWords = this.$app.getCategoryWords(category);
-
-    if (!categoryWords.length) return;
-
-    this.category = category;
-
-    categoryWords.sort(() => Math.random() - 0.5).forEach((word) => {
-      this.gameWords.push(word);
-    });
-
     setTimeout(this.sayCurrentWord.bind(this), this.$app.config.intervals.gameStep);
   }
 
   stopGame() {
-    this.gameWords.length = 0;
-    this.category = null;
     this.stats.right = 0;
     this.stats.wrong = 0;
 
@@ -78,14 +74,18 @@ export default class Game {
     Object.values(this.$view.wordsCollection).forEach((node) => node.classList.remove('inactive'));
   }
 
-  getCurrentWord() {
+  getCurrentWordObj() {
     return this.gameWords[0] || null;
+  }
+
+  getCurrentWord() {
+    return this.getCurrentWordObj().key || null;
   }
 
   sayCurrentWord() {
     if (!this.gameWords.length) return;
 
-    this.$app.playSound(this.category, this.getCurrentWord());
+    this.$app.playSound(this.getCurrentWordObj().category, this.getCurrentWord());
   }
 
   validateAnswer(word) {
@@ -99,6 +99,7 @@ export default class Game {
 
       this.stats.right += 1;
       this.addStatRight();
+      this.$statistics.addCountByType(this.getCurrentWordObj().category, this.getCurrentWord(), this.$statistics.keys.gameRight);
 
       this.gameWords.shift();
 
@@ -123,6 +124,7 @@ export default class Game {
 
       this.stats.wrong += 1;
       this.addStatWrong();
+      this.$statistics.addCountByType(this.getCurrentWordObj().category, this.getCurrentWord(), this.$statistics.keys.gameWrong);
     }
   }
 

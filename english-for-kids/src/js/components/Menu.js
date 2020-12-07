@@ -80,7 +80,7 @@ export default class Menu {
   }
 
   buildMenuCollection() {
-    ['home'].concat(Object.keys(this.$app.library.categories)).forEach((category) => {
+    ['home', 'statistics'].concat(Object.keys(this.$app.library.categories)).forEach((category) => {
       const menuItem = document.createElement('li');
       const menuItemIcon = document.createElement('figure');
       const menuItemIconImg = document.createElement('img');
@@ -126,6 +126,8 @@ export default class Menu {
 
       if (currentRoute === '') {
         this.collectionElements.home.classList.add('active');
+      } else if (currentRoute === 'statistics') {
+        this.collectionElements.statistics.classList.add('active');
       } else if (currentRoute.includes('category')) {
         this.collectionElements[currentRoute.split('/').pop()].classList.add('active');
       }

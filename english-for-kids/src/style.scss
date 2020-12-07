@@ -71,32 +71,62 @@ body {
       }
 
       & > * {
-        width: 20rem;
+        min-width: 25rem;
         text-align: center;
       }
 
       &-mode {
-        display: flex;
-        justify-content: center;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
 
-        &-separator {
-          margin: 0 0.5rem;
+        .route-statistics & > * {
+          transform: translateY(-100%);
         }
 
-        &-button {
-          color: $color-white;
-          opacity: 0.25;
-          transition: opacity $transition-default ease-in-out;
-          cursor: pointer;
+        &-game {
+          display: flex;
+          justify-content: center;
+          position: absolute;
+          width: 100%;
+          transition: transform $transition-default ease-in-out;
 
-          .mode-train &--train {
-            opacity: 1;
-            animation: 4s linear 0s infinite neon;
+          &-separator {
+            margin: 0 0.5rem;
           }
 
-          .mode-play &--play {
-            opacity: 1;
-            animation: 4s linear 0s infinite neon;
+          &-button {
+            color: $color-white;
+            opacity: 0.25;
+            transition: opacity $transition-default ease-in-out;
+            cursor: pointer;
+
+            .mode-train &--train {
+              opacity: 1;
+              animation: 4s linear 0s infinite neon;
+            }
+
+            .mode-play &--play {
+              opacity: 1;
+              animation: 4s linear 0s infinite neon;
+            }
+          }
+        }
+
+        &-statistics {
+          position: absolute;
+          width: 100%;
+          font-size: 2.5rem;
+          top: 100%;
+          transition: all $transition-default ease-in-out;
+          cursor: pointer;
+
+          @include media-sm {
+            font-size: 2rem;
+          }
+
+          &:hover {
+            text-shadow: 0 0 5px #fff;
           }
         }
       }
@@ -110,10 +140,19 @@ body {
         z-index: -1;
         transition: all $transition-default ease-in-out;
 
-        .mode-play.route-category & {
+        .route-category.mode-play &,
+        .route-statistics & {
           visibility: visible;
           opacity: 1;
           z-index: 1;
+        }
+
+        .game-active & > * {
+          transform: translateY(-100%);
+        }
+
+        .route-statistics & > * {
+          transform: translateY(-200%);
         }
 
         &-button {
@@ -131,12 +170,12 @@ body {
             opacity: 0.5;
           }
 
-          .game-active & {
-            transform: translateY(-100%);
-          }
-
           &:nth-of-type(2) {
             top: 100%;
+          }
+
+          &:nth-of-type(3) {
+            top: 200%;
           }
         }
       }
@@ -211,7 +250,6 @@ body {
 
         &.inactive {
           opacity: 0.25;
-          cursor: not-allowed;
           filter: grayscale(1);
         }
 
@@ -225,7 +263,7 @@ body {
           will-change: transform, box-shadow;
           box-shadow: 0 0 5px 0 $color-white;
 
-          #{$item}:hover & {
+          #{$item}:hover:not(.inactive) & {
             box-shadow: 0 0 15px 4px $color-white;
 
             @include media-md {
@@ -244,6 +282,10 @@ body {
             border-radius: inherit;
             cursor: pointer;
             overflow: hidden;
+
+            #{$item}.inactive & {
+              cursor: not-allowed;
+            }
 
             &-image {
               height: 100%;
@@ -311,6 +353,76 @@ body {
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
+          }
+        }
+      }
+
+      &-table {
+        table-layout: fixed;
+        font-size: 2rem;
+        border-collapse: collapse;
+        user-select: none;
+        min-width: 100%;
+
+        @include media-md {
+          font-size: 1.5rem;
+        }
+
+        &-header {
+          &-cell {
+            padding: 1rem 2.5rem;
+            position: sticky;
+            top: 0;
+            background-color: $color-purple-main;
+            min-width: 15rem;
+            cursor: pointer;
+
+            @include media-md {
+              padding: 0.5rem 2.25rem;
+              min-width: 10rem;
+            }
+
+            $cell: &;
+
+            &:nth-of-type(n + 4) {
+              min-width: auto;
+            }
+
+            &-sort {
+              height: 2rem;
+              width: 2rem;
+              position: absolute;
+              right: 0;
+              top: 50%;
+              transform: translateY(-50%);
+              background-position: center;
+              background-size: cover;
+              filter: invert(1);
+
+              @include media-md {
+                height: 1.5rem;
+                width: 1.5rem;
+              }
+
+              #{$cell}.sort-asc & {
+                background-image: url('./assets/img/sort-asc.svg');
+              }
+
+              #{$cell}.sort-desc & {
+                background-image: url('./assets/img/sort-desc.svg');
+              }
+            }
+          }
+        }
+
+        &-row {
+          &-cell {
+            padding: 0.5rem 0;
+            text-align: center;
+
+            @include media-md {
+              padding: 0.25rem 0;
+            }
           }
         }
       }

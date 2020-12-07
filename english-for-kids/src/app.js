@@ -2,6 +2,7 @@ import Library from './js/library.json';
 import Menu from './js/components/Menu';
 import Router from './js/components/Router';
 import View from './js/components/View';
+import Storage from './js/components/Storage';
 
 require('./style.scss');
 
@@ -24,6 +25,8 @@ class App {
     this.menu = new Menu(this);
     this.router = new Router(this, this.view);
     this.game = null;
+    this.statistics = null;
+    this.storage = new Storage(this);
 
     this.elements = {
       container: {
@@ -42,6 +45,7 @@ class App {
     this.menu.init();
 
     this.game = this.view.$game;
+    this.statistics = this.view.$statistics;
     this.loadSoundsShared();
 
     this.router.navigate(window.location.hash.slice(2) || 'home', true);
@@ -102,7 +106,7 @@ class App {
   }
 
   loadSoundsByCategory(category) {
-    if (!this.library.categories[category]) {
+    if (!this.library.categories[category] || this.soundsBuffer[category]) {
       return;
     }
 
@@ -125,24 +129,28 @@ class App {
       });
   }
 
-  getCategoryWords(category) {
+  getCategoryWords(category, full = false) {
     if (!this.library.categories[category]) {
       return [];
     }
 
     return this.library.categories[category].reduce((out, word) => {
-      out.push(word.key);
+      if (!full) {
+        out.push(word.key);
+      } else {
+        out.push(Object.assign(word, {category}));
+      }
 
       return out;
     }, []);
   }
 
-  containerClassAdd(className) {
-    this.elements.container.el.classList.add(className);
+  containerClassAdd(...className) {
+    this.elements.container.el.classList.add(...className);
   }
 
-  containerClassRemove(className) {
-    this.elements.container.el.classList.remove(className);
+  containerClassRemove(...classNames) {
+    this.elements.container.el.classList.remove(...classNames);
   }
 }
 

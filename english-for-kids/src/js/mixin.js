@@ -44,4 +44,27 @@ export default {
   uppercaseFirstLetter(string) {
     return string[0].toUpperCase() + string.slice(1);
   },
+  jsonEncode(string) {
+    return JSON.stringify(string);
+  },
+  jsonParse(string) {
+    return JSON.parse(string);
+  },
+  calcWordGamePercent(statisticsItem) {
+    const percentRight = (!statisticsItem.countGameRight && !statisticsItem.countGameWrong)
+      ? 0
+      : (statisticsItem.countGameWrong)
+        ? (100 * (statisticsItem.countGameRight / (statisticsItem.countGameRight + statisticsItem.countGameWrong))).toFixed(1)
+        : 100;
+    const percentWrong = (!statisticsItem.countGameRight && !statisticsItem.countGameWrong)
+      ? 0
+      : (statisticsItem.countGameRight)
+        ? (100 * (statisticsItem.countGameWrong / (statisticsItem.countGameRight + statisticsItem.countGameWrong))).toFixed(1)
+        : 100;
+
+    return {
+      right: percentRight,
+      wrong: percentWrong,
+    };
+  },
 };
