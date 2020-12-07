@@ -38,6 +38,8 @@ class App {
 
     this.audio = new (window.AudioContext || window.webkitAudioContext)();
     this.soundsBuffer = {};
+
+    alert('По возможности проверьте в последний день дедлайна :)');
   }
 
   init() {

@@ -62,6 +62,11 @@ export default class Menu {
       },
     };
     this.collectionElements = {};
+
+    this.staticRoutes = {
+      home: '',
+      statistics: 'statistics',
+    };
   }
 
   init() {
@@ -92,7 +97,7 @@ export default class Menu {
       menuItemText.innerText = Mixin.uppercaseFirstLetter(category);
 
       menuItem.addEventListener('click', () => {
-        this.$app.router.navigate((category === 'home') ? '' : `category/${category}`);
+        this.$app.router.navigate((this.staticRoutes[category] !== undefined) ? this.staticRoutes[category] : `category/${category}`);
         this.hide();
       });
 

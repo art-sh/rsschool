@@ -42,17 +42,11 @@ export default class Statistics {
     const out = [];
 
     Object.keys(this.$app.library.categories).forEach((category) => {
-      const categoryData = this.$app.library.categories[category];
+      out.push(...this.$app.getCategoryWords(category, true).map((word) => {
+        const example = {...this.collectionExample};
 
-      categoryData.forEach((word) => {
-        const collectionItem = {...this.collectionExample};
-
-        collectionItem.category = category;
-        collectionItem.key = word.key;
-        collectionItem.translation = word.translation;
-
-        out.push(collectionItem);
-      });
+        return Object.assign(example, word);
+      }));
     });
 
     return out;

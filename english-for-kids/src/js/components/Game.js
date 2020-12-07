@@ -15,6 +15,7 @@ export default class Game {
       writable: false,
     });
 
+    this.isActive = false;
     this.currentMode = null;
     this.gameWords = [];
     this.stats = {
@@ -59,12 +60,15 @@ export default class Game {
   startGame() {
     this.stopGame();
 
+    this.isActive = true;
     this.$app.containerClassAdd('game-active');
 
     setTimeout(this.sayCurrentWord.bind(this), this.$app.config.intervals.gameStep);
   }
 
   stopGame() {
+    this.isActive = false;
+
     this.stats.right = 0;
     this.stats.wrong = 0;
 

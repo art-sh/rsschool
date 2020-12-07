@@ -27,7 +27,7 @@ export default class Router {
 
       if (this.currentRoute.search('category') !== -1) [category] = this.currentRoute.split('/').reverse();
 
-      this.$view.renderPage(category);
+      this.$view.renderPage(this.currentRoute || 'home');
       document.title = Mixin.uppercaseFirstLetter(category);
 
       document.dispatchEvent(new Event('route-change'));

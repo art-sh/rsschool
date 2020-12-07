@@ -166,8 +166,8 @@ export default class View {
     this.$app.appendToContainer(Mixin.getElementsByConfig(this.elements, true));
   }
 
-  renderPage(category) {
-    this.elements.content.header.pageName.el.innerText = Mixin.uppercaseFirstLetter(category);
+  renderPage(route) {
+    this.elements.content.header.pageName.el.innerText = Mixin.uppercaseFirstLetter(route.split('/').pop());
     this.wordsCollection = {};
 
     this.elements.content.cards.container.el.ontransitionend = (e) => {
@@ -178,14 +178,16 @@ export default class View {
       this.elements.content.cards.container.el.ontransitionend = null;
       this.elements.content.cards.container.el.innerHTML = '';
 
-      if (category === 'home') {
+      if (route === 'home') {
         this.renderHomeView();
-      } else if (category === 'statistics') {
+      } else if (route === 'statistics') {
         this.renderStatistics();
-      } else if (category === 'difficult') {
+      } else if (route === 'difficult') {
         this.renderDifficult();
+      } else if (route.includes('category') && Object.keys(this.$app.library.categories).includes(route.split('/').pop())) {
+        this.renderCategory(route.split('/').pop());
       } else {
-        this.renderCategory(category);
+        this.$app.router.navigate('home');
       }
 
       this.elements.content.cards.container.el.removeAttribute('style');
@@ -256,9 +258,9 @@ export default class View {
       cardFront.addEventListener('click', () => {
         if (card.classList.contains('inactive')) return;
 
-        if (this.$game.currentMode === this.$game.MODE_PLAY) {
+        if (this.$game.isActive) {
           this.$game.validateAnswer(config.key);
-        } else {
+        } else if (this.$game.currentMode === this.$game.MODE_TRAIN) {
           this.$app.playSound(category, config.key);
 
           this.$statistics.addCountByType(category, config.key, this.$statistics.keys.train);
@@ -416,21 +418,21 @@ export default class View {
 
   setViewListeners() {
     document.addEventListener('route-change', () => {
-      const category = this.$app.router.currentRoute.split('/').pop();
+      const {currentRoute} = this.$app.router;
 
       this.$app.containerClassRemove('route-category', 'route-statistics');
 
-      if (!['statistics', 'difficult'].includes(category)) {
+      if (currentRoute.includes('category')) {
         this.$app.containerClassAdd('route-category');
 
-        this.$app.loadSoundsByCategory(category);
-        this.$game.fillGameWordsByCategory(category);
-      } else if (category === 'difficult') {
+        this.$app.loadSoundsByCategory(currentRoute.split('/').pop());
+        this.$game.fillGameWordsByCategory(currentRoute.split('/').pop());
+      } else if (currentRoute === 'difficult') {
         this.$app.containerClassAdd('route-category');
 
         this.$statistics.getDifficultWords().forEach((word) => this.$app.loadSoundsByCategory(word.category));
         this.$game.fillGameWordsDifficult(this.$statistics.getDifficultWords());
-      } else if (category === 'statistics') {
+      } else if (currentRoute === 'statistics') {
         this.$app.containerClassAdd('route-statistics');
       }
 

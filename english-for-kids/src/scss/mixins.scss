@@ -1,86 +1,117 @@
 @import './variables';
 
+@mixin neon($color) {
+  $animationName: neon-#{str-slice(quote($color), 2)};
 
-$shadowColor: $color-pink-neon;
-$shadowFull: 0 0 2px $shadowColor, 0 0 5px $shadowColor, 0 0 15px $shadowColor;
-$shadowSemi: 0 0 5px $shadowColor, 0 0 10px $shadowColor, 0 0 75px $shadowColor;
-$shadowHalf: 0 0 10px $shadowColor, 0 0 20px $shadowColor, 0 0 100px $shadowColor;
+  animation: 4s linear 0s infinite $animationName;
 
-@keyframes neon {
-  0% {
-    text-shadow: $shadowFull;
-  }
-  10% {
-    text-shadow: $shadowHalf;
-  }
-  15% {
-    text-shadow: $shadowSemi;
-  }
-  20% {
-    text-shadow: $shadowHalf;
-  }
-  25% {
-    text-shadow: $shadowSemi;
-  }
-  30% {
-    text-shadow: $shadowHalf;
-  }
-  35% {
-    text-shadow: $shadowSemi;
-  }
-  40% {
-    text-shadow: $shadowHalf;
-  }
-  45% {
-    text-shadow: $shadowFull;
-  }
-  50% {
-    text-shadow: $shadowHalf;
-  }
-  55% {
-    text-shadow: $shadowSemi;
-  }
-  60% {
-    text-shadow: $shadowHalf;
-  }
-  65% {
-    text-shadow: $shadowFull;
-  }
-  70% {
-    text-shadow: $shadowHalf;
-  }
-  90% {
-    text-shadow: $shadowFull;
-  }
-  91% {
-    text-shadow: none;
-  }
-  92% {
-    text-shadow: $shadowFull;
-  }
-  93% {
-    text-shadow: none;
-  }
-  94% {
-    text-shadow: $shadowFull;
-  }
-  95% {
-    text-shadow: none;
-  }
-  96% {
-    text-shadow: $shadowFull;
-  }
-  97% {
-    text-shadow: none;
-  }
-  98% {
-    text-shadow: $shadowFull;
-  }
-  99% {
-    text-shadow: none;
-  }
-  100% {
-    text-shadow: $shadowFull;
+  $shadowColor: $color;
+  $shadowFull: 0 0 2px $shadowColor, 0 0 5px $shadowColor, 0 0 15px $shadowColor;
+  $shadowSemi: 0 0 5px $shadowColor, 0 0 10px $shadowColor, 0 0 16px $shadowColor;
+  $shadowHalf: 0 0 10px $shadowColor, 0 0 20px $shadowColor, 0 0 17px $shadowColor;
+
+  @at-root {
+    @keyframes #{$animationName} {
+      0% {
+        text-shadow: $shadowFull;
+      }
+
+      10% {
+        text-shadow: $shadowHalf;
+      }
+
+      15% {
+        text-shadow: $shadowSemi;
+      }
+
+      20% {
+        text-shadow: $shadowHalf;
+      }
+
+      25% {
+        text-shadow: $shadowSemi;
+      }
+
+      30% {
+        text-shadow: $shadowHalf;
+      }
+
+      35% {
+        text-shadow: $shadowSemi;
+      }
+
+      40% {
+        text-shadow: $shadowHalf;
+      }
+
+      45% {
+        text-shadow: $shadowFull;
+      }
+
+      50% {
+        text-shadow: $shadowHalf;
+      }
+
+      55% {
+        text-shadow: $shadowSemi;
+      }
+
+      60% {
+        text-shadow: $shadowHalf;
+      }
+
+      65% {
+        text-shadow: $shadowFull;
+      }
+
+      70% {
+        text-shadow: $shadowHalf;
+      }
+
+      90% {
+        text-shadow: $shadowFull;
+      }
+
+      91% {
+        text-shadow: none;
+      }
+
+      92% {
+        text-shadow: $shadowFull;
+      }
+
+      93% {
+        text-shadow: none;
+      }
+
+      94% {
+        text-shadow: $shadowFull;
+      }
+
+      95% {
+        text-shadow: none;
+      }
+
+      96% {
+        text-shadow: $shadowFull;
+      }
+
+      97% {
+        text-shadow: none;
+      }
+
+      98% {
+        text-shadow: $shadowFull;
+      }
+
+      99% {
+        text-shadow: none;
+      }
+
+      100% {
+        text-shadow: $shadowFull;
+      }
+    }
   }
 }
 
