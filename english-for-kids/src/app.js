@@ -57,17 +57,13 @@ class App {
     }
   }
 
-  getCategoryWords(category, full = false) {
+  getCategoryWords(category) {
     if (!this.library.categories[category]) {
       return [];
     }
 
     return this.library.categories[category].reduce((out, word) => {
-      if (!full) {
-        out.push(word.key);
-      } else {
-        out.push(Object.assign(word, {category}));
-      }
+      out.push(Object.assign(word, {category}));
 
       return out;
     }, []);

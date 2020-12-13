@@ -5,18 +5,13 @@ export default class Game {
     this.$stats = view.elements.content.gameStats.container.el;
     this.$statistics = statistics;
 
-    Object.defineProperty(this, 'MODE_PLAY', {
-      value: 'play',
-      writable: false,
-    });
-
-    Object.defineProperty(this, 'MODE_TRAIN', {
-      value: 'train',
-      writable: false,
+    this.MODES = Object.freeze({
+      PLAY: 'play',
+      TRAIN: 'train',
     });
 
     this.isActive = false;
-    this.currentMode = null;
+    this.currentMode = this.MODES.TRAIN;
     this.gameWords = [];
     this.stats = {
       right: 0,
@@ -27,13 +22,13 @@ export default class Game {
   }
 
   toggleGame() {
-    this.currentMode = this.MODE_PLAY;
+    this.currentMode = this.MODES.PLAY;
     this.$app.containerClassAdd('mode-play');
     this.$app.containerClassRemove('mode-train');
   }
 
   toggleTrain() {
-    this.currentMode = this.MODE_TRAIN;
+    this.currentMode = this.MODES.TRAIN;
     this.$app.containerClassAdd('mode-train');
     this.$app.containerClassRemove('mode-play');
 
@@ -42,9 +37,7 @@ export default class Game {
 
   fillGameWordsByCategory(category) {
     this.gameWords.length = 0;
-    const categoryWords = this.$app.getCategoryWords(category, true);
-
-    if (!categoryWords.length) return;
+    const categoryWords = this.$app.getCategoryWords(category);
 
     categoryWords.sort(() => Math.random() - 0.5).forEach((word) => this.gameWords.push(word));
   }
@@ -79,11 +72,19 @@ export default class Game {
   }
 
   getCurrentWordObj() {
-    return this.gameWords[0] || null;
+    if (!this.gameWords[0]) {
+      throw new Error('Invalid word');
+    }
+
+    return this.gameWords[0];
   }
 
   getCurrentWord() {
-    return this.getCurrentWordObj().key || null;
+    if (!this.getCurrentWordObj().key) {
+      throw new Error('Invalid word object');
+    }
+
+    return this.getCurrentWordObj().key;
   }
 
   sayCurrentWord() {

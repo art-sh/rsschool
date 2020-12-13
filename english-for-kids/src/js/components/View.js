@@ -211,7 +211,7 @@ export default class View {
   }
 
   renderCategory(category) {
-    const words = this.$app.getCategoryWords(category, true);
+    const words = this.$app.getCategoryWords(category);
 
     words.length && words.forEach((word) => {
       this.elements.content.cards.container.el.append(this.getCard(word.category, word));
@@ -260,7 +260,7 @@ export default class View {
 
         if (this.$game.isActive) {
           this.$game.validateAnswer(config.key);
-        } else if (this.$game.currentMode === this.$game.MODE_TRAIN) {
+        } else if (this.$game.currentMode === this.$game.MODES.TRAIN) {
           this.$app.player.playSound(category, config.key);
 
           this.$statistics.addCountByType(category, config.key, this.$statistics.keys.train);
@@ -436,7 +436,7 @@ export default class View {
         this.$app.containerClassAdd('route-statistics');
       }
 
-      if (this.$game.currentMode === this.$game.MODE_PLAY) this.$game.stopGame();
+      if (this.$game.currentMode === this.$game.MODES.PLAY) this.$game.stopGame();
     });
   }
 }
