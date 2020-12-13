@@ -5,6 +5,8 @@ import View from './js/components/View';
 import Storage from './js/components/Storage';
 import AssetsLoader from './js/components/AssetsLoader';
 import Player from './js/components/Player';
+import Game from './js/components/Game';
+import Statistics from './js/components/Statistics';
 
 require('./style.scss');
 
@@ -21,13 +23,14 @@ class App {
         gameStep: 500,
         popupRedirect: 3000,
       },
+      maxDifficultWordsCount: 8,
     };
 
     this.view = new View(this);
     this.menu = new Menu(this);
     this.router = new Router(this, this.view);
-    this.game = null;
-    this.statistics = null;
+    this.statistics = new Statistics(this);
+    this.game = new Game(this, this.view, this.statistics);
     this.storage = new Storage(this);
 
     this.elements = {
@@ -42,9 +45,9 @@ class App {
   init() {
     this.view.init();
     this.menu.init();
+    this.statistics.init();
+    this.game.init();
 
-    this.game = this.view.$game;
-    this.statistics = this.view.$statistics;
     this.assetsLoader.init();
     this.player.init();
 

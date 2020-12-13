@@ -1,6 +1,4 @@
 import Mixin from '../mixin';
-import Game from './Game';
-import Statistics from './Statistics';
 
 export default class View {
   constructor(app) {
@@ -154,8 +152,8 @@ export default class View {
     this.buildContainer();
     this.setViewListeners();
 
-    this.$statistics = new Statistics(this.$app);
-    this.$game = new Game(this.$app, this, this.$statistics);
+    this.$statistics = this.$app.statistics;
+    this.$game = this.$app.game;
   }
 
   getElements() {

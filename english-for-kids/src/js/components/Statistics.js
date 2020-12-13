@@ -4,14 +4,10 @@ export default class Statistics {
   constructor(app) {
     this.$app = app;
 
-    Object.defineProperty(this, 'SORT_ASC', {
-      value: 'asc',
-      writable: false,
-    });
-
-    Object.defineProperty(this, 'SORT_DESC', {
-      value: 'desc',
-      writable: false,
+    this.MODES_SORT = Object.freeze({
+      ASC: 'asc',
+      DESC: 'desc',
+      DEFAULT: 'default',
     });
 
     this.collectionExample = {
@@ -22,7 +18,7 @@ export default class Statistics {
       countGameRight: 0,
       countGameWrong: 0,
     };
-    this.collection = this.$app.storage.getStatisticsData() || this.getEmptyCollection();
+    this.collection = this.getEmptyCollection();
     this.collectionNodes = [];
     this.sort = {
       collectionInitial: this.collectionNodes,
@@ -36,6 +32,10 @@ export default class Statistics {
       gameRight: 'countGameRight',
       gameWrong: 'countGameWrong',
     };
+  }
+
+  init() {
+    this.collection = this.$app.storage.getStatisticsData() || this.getEmptyCollection();
   }
 
   getEmptyCollection() {
@@ -74,28 +74,32 @@ export default class Statistics {
     }
 
     this.sort.column = column;
-    this.sort.type = (this.sort.type === this.SORT_DESC)
-      ? this.SORT_ASC
-      : (this.sort.type === this.SORT_ASC)
-        ? null
-        : this.SORT_DESC;
+    if (this.sort.type === this.MODES_SORT.DESC) {
+      this.sort.type = this.MODES_SORT.ASC;
+    } else if (this.sort.type === this.MODES_SORT.ASC) {
+      this.sort.type = this.MODES_SORT.DEFAULT;
+    } else {
+      this.sort.type = this.MODES_SORT.DESC;
+    }
 
-    const asc = (a, b) => (a.config[this.sort.column] > b.config[this.sort.column])
-      ? -1
-      : (a.config[this.sort.column] < b.config[this.sort.column])
-        ? 1
-        : 0;
-    const desc = (a, b) => (a.config[this.sort.column] > b.config[this.sort.column])
-      ? 1
-      : (b.config[this.sort.column] > a.config[this.sort.column])
-        ? -1
-        : 0;
+    const asc = (a, b) => {
+      if (a.config[this.sort.column] > b.config[this.sort.column]) return -1;
+      if (a.config[this.sort.column] < b.config[this.sort.column]) return 1;
+
+      return 0;
+    };
+    const desc = (a, b) => {
+      if (a.config[this.sort.column] > b.config[this.sort.column]) return 1;
+      if (b.config[this.sort.column] > a.config[this.sort.column]) return -1;
+
+      return 0;
+    };
 
     this.sort.collectionSorted.length = 0;
     this.sort.collectionInitial.forEach((item) => this.sort.collectionSorted.push(item));
 
-    if (this.sort.type) {
-      this.sort.collectionSorted.sort((this.sort.type === this.SORT_ASC) ? asc : desc);
+    if (this.sort.type !== this.MODES_SORT.DEFAULT) {
+      this.sort.collectionSorted.sort((this.sort.type === this.MODES_SORT.ASC) ? asc : desc);
     }
 
     document.dispatchEvent(new Event('statistics-changed'));
@@ -126,6 +130,6 @@ export default class Statistics {
 
         return (percentsCurrent.wrong < percentsPrevious.wrong) ? -1 : 1;
       })
-      .slice(0, 8);
+      .slice(0, this.$app.config.maxDifficultWordsCount);
   }
 }

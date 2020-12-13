@@ -2,7 +2,7 @@ export default class Game {
   constructor(app, view, statistics) {
     this.$app = app;
     this.$view = view;
-    this.$stats = view.elements.content.gameStats.container.el;
+    this.$stats = null;
     this.$statistics = statistics;
 
     this.MODES = Object.freeze({
@@ -17,6 +17,10 @@ export default class Game {
       right: 0,
       wrong: 0,
     };
+  }
+
+  init() {
+    this.$stats = this.$view.elements.content.gameStats.container.el;
 
     this.toggleTrain();
   }
