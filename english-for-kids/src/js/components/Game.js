@@ -89,7 +89,7 @@ export default class Game {
   sayCurrentWord() {
     if (!this.gameWords.length) return;
 
-    this.$app.playSound(this.getCurrentWordObj().category, this.getCurrentWord());
+    this.$app.player.playSound(this.getCurrentWordObj().category, this.getCurrentWord());
   }
 
   validateAnswer(word) {
@@ -99,7 +99,7 @@ export default class Game {
 
     if (isRight) {
       this.$view.wordsCollection[word].classList.add('inactive');
-      this.$app.playSound('shared', 'correct');
+      this.$app.player.playSound('shared', 'correct');
 
       this.stats.right += 1;
       this.addStatRight();
@@ -111,7 +111,7 @@ export default class Game {
         this.popupShow();
 
         setTimeout(() => {
-          this.$app.playSound('shared', (this.stats.wrong) ? 'failure' : 'success');
+          this.$app.player.playSound('shared', (this.stats.wrong) ? 'failure' : 'success');
         }, this.$app.config.intervals.gameStep);
 
         setTimeout(() => {
@@ -124,7 +124,7 @@ export default class Game {
         setTimeout(this.sayCurrentWord.bind(this), this.$app.config.intervals.gameStep);
       }
     } else {
-      this.$app.playSound('shared', 'error');
+      this.$app.player.playSound('shared', 'error');
 
       this.stats.wrong += 1;
       this.addStatWrong();

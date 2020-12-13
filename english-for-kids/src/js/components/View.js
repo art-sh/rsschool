@@ -261,7 +261,7 @@ export default class View {
         if (this.$game.isActive) {
           this.$game.validateAnswer(config.key);
         } else if (this.$game.currentMode === this.$game.MODE_TRAIN) {
-          this.$app.playSound(category, config.key);
+          this.$app.player.playSound(category, config.key);
 
           this.$statistics.addCountByType(category, config.key, this.$statistics.keys.train);
         }
@@ -425,12 +425,12 @@ export default class View {
       if (currentRoute.includes('category')) {
         this.$app.containerClassAdd('route-category');
 
-        this.$app.loadSoundsByCategory(currentRoute.split('/').pop());
+        this.$app.assetsLoader.loadSoundsByCategory(currentRoute.split('/').pop());
         this.$game.fillGameWordsByCategory(currentRoute.split('/').pop());
       } else if (currentRoute === 'difficult') {
         this.$app.containerClassAdd('route-category');
 
-        this.$statistics.getDifficultWords().forEach((word) => this.$app.loadSoundsByCategory(word.category));
+        this.$statistics.getDifficultWords().forEach((word) => this.$app.assetsLoader.loadSoundsByCategory(word.category));
         this.$game.fillGameWordsDifficult(this.$statistics.getDifficultWords());
       } else if (currentRoute === 'statistics') {
         this.$app.containerClassAdd('route-statistics');
