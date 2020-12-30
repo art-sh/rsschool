@@ -11,3 +11,4 @@ Private repository for @art-sh
 * [Virtual keyboard](https://rolling-scopes-school.github.io/art-sh-JS2020Q3/virtual-keyboard/build/)
 * [Gem puzzle](https://rolling-scopes-school.github.io/art-sh-JS2020Q3/gem-puzzle/build/)
 * [English for kids](https://rolling-scopes-school.github.io/art-sh-JS2020Q3/english-for-kids/build/)
+* [Covid dashboard](https://rolling-scopes-school.github.io/art-sh-JS2020Q3/covid-dashboard/build/)
