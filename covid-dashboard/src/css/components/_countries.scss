@@ -1,0 +1,80 @@
+.country {
+  border-radius: 5px;
+  min-width: 260px;
+  position: relative;
+  background-color: $main-bg;
+
+  .fullscreen__country & {
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    z-index: 100000;
+    height: 100%;
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+.country__header {
+  padding: 20px 10px;
+  border-bottom: 1px solid #252323;
+}
+
+.country__main-title {
+  font-size: 24px;
+  color: $accent;
+  margin-bottom: 10px;
+}
+
+.country__list {
+  box-sizing: border-box;
+  overflow-y: scroll;
+  height: 1px;
+  min-height: calc(100% - 108px);
+
+  @include media-md {
+    height: auto;
+    max-height: 425px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+
+.country__item {
+  border-bottom: 1px solid #252323;
+  padding: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.country__cases {
+  font-size: 16px;
+  letter-spacing: 0.03em;
+  margin-right: 10px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.country__name-text {
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+  text-overflow: ellipsis;
+  width: calc(100% - 25px);
+  overflow: hidden;
+}
+
+.country__name-flag {
+  width: 20px;
+  margin-right: 5px;
+}
+

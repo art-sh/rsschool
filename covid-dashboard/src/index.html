@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COVID-19 Dashboard</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Pacifico&display=swap"
+        rel="stylesheet">
+  <!--For Map-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.css"/>
+</head>
+<body class="body">
+<div class="content">
+  <header class="header">
+    <h1 class="main-title">COVID-19 Dashboard</h1>
+  </header>
+  <main class="main">
+    <div class="information">
+      <div class="statistic">
+        <div class="resize-button resize-button_statistic"></div>
+        <div class="information__header">
+          <h2 class="information__main-title">Statistic</h2>
+          <p class="information__subtitle">Last Updated: <span
+            class="information__last-update">12/25/2020</span></p>
+        </div>
+        <ul class="information__list">
+          <li class="information__item">
+            <h2 class="information__title">Cases in</h2>
+            <p class="information__numbers information__numbers_location">...</p>
+          </li>
+          <li class="information__item">
+            <h2 class="information__title">All cases</h2>
+            <p class="information__numbers information__numbers_all">...</p>
+          </li>
+          <li class="information__item">
+            <h2 class="information__title">Deaths</h2>
+            <p class="information__numbers information__numbers_deaths">...</p>
+          </li>
+          <li class="information__item">
+            <h2 class="information__title">Recovered</h2>
+            <p class="information__numbers information__numbers_recovered">...</p>
+          </li>
+        </ul>
+        <div class="switches">
+          <div class="switches__item switches__item_time">
+            <button class="switches__btn switches__btn_time" type="button">all time</button>
+            <ul class="switches__list">
+              <li class="switches__option" data-param="all-time">all time</li>
+              <li class="switches__option" data-param="last-day">last day</li>
+            </ul>
+          </div>
+          <div class="switches__item switches__item_cases">
+            <button class="switches__btn switches__btn_cases" type="button">all cases</button>
+            <ul class="switches__list">
+              <li class="switches__option" data-param="all-cases">all cases</li>
+              <li class="switches__option" data-param="per-100k">per 100 000</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="chart">
+        <div class="resize-button resize-button_chart"></div>
+        <h3 class="chart__title">Chart</h3>
+        <div class="chart__body">
+          <canvas class="chart__body-box"></canvas>
+          <div class="chart__body-mode">
+            <div class="chart__body-mode-nav">
+              <div class="chart__body-mode-nav-prev"><</div>
+              <div class="chart__body-mode-nav-next">></div>
+            </div>
+            <div class="chart__body-mode-current">Total Cases</div>
+          </div>
+          <div class="chart__body-loader">
+            <span class="chart__body-loader-title">Computing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="map">
+      <div class="resize-button resize-button_map"></div>
+      <div class="map__block" id="map"></div>
+      <div class="map__legend">
+        <div class="map__legend-title">Legend:</div>
+        <div class="map__legend-subtitle">percent of max</div>
+        <div class="map__legend-list">
+          <div class="map__legend-list-item good">0% - 25%</div>
+          <div class="map__legend-list-item average">25% - 50%</div>
+          <div class="map__legend-list-item medium">50% - 75%</div>
+          <div class="map__legend-list-item high">75% - 100%</div>
+        </div>
+      </div>
+    </div>
+    <div class="country">
+      <div class="resize-button resize-button_country"></div>
+      <div class="country__header">
+        <h2 class="country__main-title">Countries</h2>
+        <div class="search">
+          <input type="search" placeholder="Search..." class="search__input">
+          <button class="search__button" type="reset">
+            <img src="./img/close.svg" alt="reset">
+          </button>
+        </div>
+      </div>
+      <ul class="country__list"></ul>
+    </div>
+  </main>
+</div>
+<footer class="footer">
+  <div class="authors">
+    <a href="https://github.com/Marinarium" class="authors_link">
+      <img src="img/git-logo.svg" alt="github" class="authors__logo">
+      <span class="authors_name">marinarium</span>
+    </a>
+    <a href="https://rs.school/" class="course">
+      <img src="img/rs-logo.svg" alt="RS school" class="course__logo">
+    </a>
+    <a href="https://github.com/art-sh" class="authors_link">
+      <img src="img/git-logo.svg" alt="github" class="authors__logo">
+      <span class="authors_name">art-sh</span>
+    </a>
+  </div>
+  <div class="year">2020</div>
+</footer>
+<div class="loader show">
+  <div class="loader__header">Loading...</div>
+  <div class="loader__text">Please, wait, data is being processed</div>
+  <div class="loader__progress">
+    <div class="loader__progress-line"></div>
+  </div>
+</div>
+<!-- Vendor scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--For Map-->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
+<script src="https://cdn.maptiler.com/mapbox-gl-leaflet/latest/leaflet-mapbox-gl.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+.chart {
+  position: relative;
+  background-color: $main-bg;
+  user-select: none;
+
+  $chart: &;
+
+  .fullscreen__chart & {
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    z-index: 100000;
+    height: 100%;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  &.loading {
+    pointer-events: none;
+    user-select: none;
+    cursor: default;
+  }
+
+  &__body {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &-box {
+      height: 100%;
+      //max-height: 105px;
+      //max-width: 250px;
+
+      .fullscreen__chart & {
+        max-height: unset;
+        max-width: 750px;
+      }
+    }
+
+    &-mode {
+      padding: 0.5rem 0;
+      position: relative;
+      text-align: center;
+      width: 100%;
+
+      &-nav {
+        display: flex;
+        top: 50%;
+        height: 0;
+        width: 100%;
+        position: absolute;
+        justify-content: space-between;
+
+        &-prev, &-next {
+          position: absolute;
+          top: 0;
+          transform: translateY(-50%);
+          font-size: 2rem;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        &-next {
+          right: 0;
+        }
+      }
+
+      &-current {
+        font-size: 14px;
+      }
+    }
+
+    &-loader {
+      #{$chart}.loading & {
+        visibility: visible;
+        opacity: 1;
+        z-index: 0;
+      }
+
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background-color: $chartLoaderBackground;
+      justify-content: center;
+      align-items: center;
+      transition: all .5s;
+      visibility: hidden;
+      opacity: 0;
+      z-index: -1;
+
+      &-title {
+        font-size: 2rem;
+      }
+    }
+  }
+}
+
+.chart_full {
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 100000;
+  width: calc(100vw - 40px);
+  height: 100%;
+
+  .chart__title {
+    text-align: left;
+    padding-left: 15px;
+  }
+}
+
+.chart__title {
+  font-size: 16px;
+  color: $accent;
+  //margin-bottom: 20px;
+  text-align: center;
+}
